@@ -1,0 +1,291 @@
+:root {
+  --overlay-text: #2c241f;
+  --overlay-muted: rgba(44, 36, 31, 0.58);
+  --overlay-surface: rgba(255, 253, 249, 0.9);
+  --overlay-border: rgba(160, 135, 103, 0.32);
+  --overlay-primary: #2f8f83;
+  --overlay-accent: #c86e52;
+  --overlay-warning: #c48a2c;
+  --overlay-shadow: rgba(92, 66, 41, 0.16);
+  --overlay-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --overlay-window-padding: 16px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.recording-overlay-shell {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--overlay-window-padding);
+  box-sizing: border-box;
+  background: transparent;
+  pointer-events: none;
+}
+
+.recording-overlay {
+  height: 36px;
+  width: 172px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  background: var(--overlay-surface);
+  border: 1px solid var(--overlay-border);
+  border-radius: 18px;
+  box-shadow:
+    0 10px 26px var(--overlay-shadow),
+    0 1px 6px rgba(92, 66, 41, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(22px) saturate(1.18);
+  -webkit-backdrop-filter: blur(22px) saturate(1.18);
+  box-sizing: border-box;
+  color: var(--overlay-text);
+  opacity: 0;
+  transform: translateY(5px) scale(0.98);
+  pointer-events: auto;
+  transition:
+    opacity 220ms var(--overlay-ease),
+    transform 220ms var(--overlay-ease);
+}
+
+.recording-overlay.fade-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.recording-overlay-realtime {
+  width: 420px;
+  height: 180px;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: start;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 16px;
+}
+
+.overlay-left,
+.overlay-right {
+  display: flex;
+  align-items: center;
+}
+
+.overlay-middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.recording-overlay-realtime .overlay-left,
+.recording-overlay-realtime .overlay-right {
+  padding-top: 0;
+}
+
+.recording-overlay-realtime .overlay-middle {
+  align-items: stretch;
+  justify-content: stretch;
+  height: 100%;
+}
+
+.overlay-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--overlay-primary);
+  background: color-mix(in srgb, var(--overlay-primary) 12%, transparent);
+}
+
+.overlay-icon-processing {
+  color: var(--overlay-accent);
+  background: color-mix(in srgb, var(--overlay-accent) 14%, transparent);
+}
+
+.compact-state {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.state-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--overlay-primary);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--overlay-primary) 14%, transparent);
+  flex: 0 0 auto;
+}
+
+.bars-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 22px;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.bar {
+  width: 5px;
+  height: 20px;
+  min-height: 20px;
+  background: linear-gradient(180deg, #62b7aa, var(--overlay-primary));
+  border-radius: 999px;
+  transform-origin: center;
+  box-shadow: 0 0 12px
+    color-mix(in srgb, var(--overlay-primary) 34%, transparent);
+  transition:
+    transform 70ms var(--overlay-ease),
+    opacity 120ms var(--overlay-ease);
+}
+
+.transcribing-text {
+  min-width: 0;
+  color: var(--overlay-text);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  animation: transcribing-pulse 1.4s infinite var(--overlay-ease);
+}
+
+.realtime-panel {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  color: var(--overlay-text);
+}
+
+.realtime-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.realtime-status {
+  min-width: 0;
+  color: var(--overlay-muted);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.realtime-header-icon {
+  margin-left: auto;
+  color: var(--overlay-muted);
+  flex: 0 0 auto;
+}
+
+.realtime-text {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid rgba(160, 135, 103, 0.24);
+  border-radius: 10px;
+  background: rgba(255, 253, 249, 0.62);
+  color: var(--overlay-text);
+  font-size: 14px;
+  font-weight: 560;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  scrollbar-width: thin;
+}
+
+.realtime-partial {
+  color: var(--overlay-muted);
+}
+
+.realtime-placeholder {
+  color: rgba(44, 36, 31, 0.38);
+}
+
+@keyframes transcribing-pulse {
+  0%,
+  100% {
+    opacity: 0.58;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.cancel-button {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--overlay-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background-color 150ms var(--overlay-ease),
+    color 150ms var(--overlay-ease),
+    transform 120ms var(--overlay-ease);
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.cancel-button:hover {
+  background: color-mix(in srgb, var(--overlay-accent) 14%, transparent);
+  color: var(--overlay-accent);
+  transform: scale(1.05);
+}
+
+.cancel-button:active {
+  transform: scale(0.94);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --overlay-text: #f7efe5;
+    --overlay-muted: rgba(247, 239, 229, 0.58);
+    --overlay-surface: rgba(38, 32, 27, 0.92);
+    --overlay-border: rgba(255, 239, 217, 0.16);
+    --overlay-primary: #5fb6a8;
+    --overlay-accent: #e08a6d;
+    --overlay-warning: #e1b45a;
+    --overlay-shadow: rgba(0, 0, 0, 0.38);
+  }
+
+  .realtime-text {
+    border-color: rgba(255, 239, 217, 0.14);
+    background: rgba(255, 239, 217, 0.07);
+  }
+
+  .realtime-placeholder {
+    color: rgba(247, 239, 229, 0.38);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recording-overlay,
+  .bar,
+  .cancel-button {
+    transition-duration: 1ms;
+  }
+
+  .transcribing-text {
+    animation: none;
+  }
+}

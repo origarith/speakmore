@@ -1,0 +1,272 @@
+{
+  description = "SpeakMore - A free, open source, local-first speech-to-text application";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    # bun2nix: generates per-package Nix fetchurl expressions from bun.lock,
+    # replacing the old FOD approach where a single hash covered the entire
+    # node_modules directory (that hash would break on bun version changes).
+    # See: https://github.com/nix-community/bun2nix
+    bun2nix = {
+      url = "github:nix-community/bun2nix/2.0.8";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      bun2nix,
+    }:
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      # Read version from Cargo.toml
+      cargoToml = fromTOML (builtins.readFile ./src-tauri/Cargo.toml);
+      version = cargoToml.package.version;
+      sherpaOnnxVersion = "1.13.2";
+
+      # Shared native library dependencies for both package build and dev shell.
+      # Keep in sync: if a native dep is needed for compilation, add it here.
+      commonNativeDeps = pkgs: with pkgs; [
+        webkitgtk_4_1
+        gtk3
+        glib
+        libsoup_3
+        alsa-lib
+        onnxruntime
+        libayatana-appindicator
+        libevdev
+        libxtst
+        gtk-layer-shell
+        openssl
+        vulkan-loader
+        vulkan-headers
+        shaderc
+      ];
+
+      # GStreamer plugins for WebKitGTK audio/video
+      gstPlugins = pkgs: with pkgs.gst_all_1; [
+        gstreamer
+        gst-plugins-base
+        gst-plugins-good
+        gst-plugins-bad
+        gst-plugins-ugly
+      ];
+
+      # Shared environment variables for Rust/native builds
+      commonEnv = pkgs: let lib = pkgs.lib; in {
+        ORT_LIB_LOCATION = "${pkgs.onnxruntime}/lib";
+        ORT_PREFER_DYNAMIC_LINK = "1";
+        GST_PLUGIN_SYSTEM_PATH_1_0 = "${lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (gstPlugins pkgs)}";
+      };
+
+    in
+    {
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [
+              bun2nix.overlays.default
+            ];
+          };
+          lib = pkgs.lib;
+          combinedAlsaPlugins = pkgs.symlinkJoin {
+            name = "combined-alsa-plugins";
+            paths = [
+              "${pkgs.pipewire}/lib/alsa-lib"
+              "${pkgs.alsa-plugins}/lib/alsa-lib"
+            ];
+          };
+          sherpaOnnxArchiveName = {
+            x86_64-linux = "sherpa-onnx-v${sherpaOnnxVersion}-linux-x64-static-lib.tar.bz2";
+            aarch64-linux = "sherpa-onnx-v${sherpaOnnxVersion}-linux-aarch64-static-lib.tar.bz2";
+          }.${system};
+          sherpaOnnxArchive = pkgs.fetchurl {
+            url = "https://github.com/k2-fsa/sherpa-onnx/releases/download/v${sherpaOnnxVersion}/${sherpaOnnxArchiveName}";
+            hash = {
+              x86_64-linux = "sha256-alP04ReFPw5aLfdbM/3gZpctwbuSCYSyZ0hZ7QA0Ruo=";
+              aarch64-linux = "sha256-xj7Mi+N7+MhYy3BLUHd+g2M3eXwe5J5a7Mec1cd/xxE=";
+            }.${system};
+          };
+          sherpaOnnxArchiveDir = pkgs.runCommand "sherpa-onnx-archive-dir" { } ''
+            mkdir -p "$out"
+            ln -s "${sherpaOnnxArchive}" "$out/${sherpaOnnxArchiveName}"
+          '';
+        in
+        {
+          speakmore = pkgs.rustPlatform.buildRustPackage {
+            pname = "speakmore";
+            inherit version;
+            src = self;
+
+            cargoRoot = "src-tauri";
+            buildAndTestSubdir = "src-tauri";
+            tauriBundleType = "deb";
+
+            cargoLock = {
+              lockFile = ./src-tauri/Cargo.lock;
+              # Automatically fetch git dependencies using builtins.fetchGit.
+              # This eliminates the need for manual outputHashes that had to be
+              # updated every time a git dependency changed in Cargo.lock.
+              # Safe for standalone flakes (not allowed in nixpkgs, it is needed something like crate2nix).
+              allowBuiltinFetchGit = true;
+            };
+
+            postPatch = ''
+              ${pkgs.jq}/bin/jq '.bundle.createUpdaterArtifacts = false' \
+                src-tauri/tauri.conf.json > $TMPDIR/tauri.conf.json
+              cp $TMPDIR/tauri.conf.json src-tauri/tauri.conf.json
+
+              # Strip postinstall hook — it runs check-nix-deps.ts which is only
+              # needed during local development, not inside the Nix sandbox.
+              ${pkgs.jq}/bin/jq 'del(.scripts.postinstall)' \
+                package.json > $TMPDIR/package.json
+              cp $TMPDIR/package.json package.json
+
+              # Point libappindicator-sys to the Nix store path
+              substituteInPlace \
+                $cargoDepsCopy/libappindicator-sys-*/src/lib.rs \
+                --replace-fail \
+                  "libayatana-appindicator3.so.1" \
+                  "${pkgs.libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
+
+              # Disable cbindgen in ferrous-opencc (calls cargo metadata which fails in sandbox)
+              # Upstream removed this call in v0.3.1+
+              substituteInPlace $cargoDepsCopy/ferrous-opencc-0.2.3/build.rs \
+                --replace-fail '.expect("Unable to generate bindings")' '.ok();'
+              substituteInPlace $cargoDepsCopy/ferrous-opencc-0.2.3/build.rs \
+                --replace-fail '.write_to_file("opencc.h");' '// skipped'
+            '';
+
+            # Bun dependencies: fetched per-package using hashes from .nix/bun.nix.
+            # This file is auto-generated by `bunx bun2nix -o .nix/bun.nix` and
+            # kept in sync via the postinstall hook in package.json.
+            # To regenerate manually: bun scripts/check-nix-deps.ts
+            bunDeps = pkgs.bun2nix.fetchBunDeps {
+              bunNix = ./.nix/bun.nix;
+            };
+
+            nativeBuildInputs = with pkgs; [
+              cargo-tauri.hook
+              pkg-config
+              wrapGAppsHook4
+              bun
+              # pkgs.bun2nix (from overlay), not the flake input — `with pkgs;`
+              # doesn't shadow function arguments in Nix.
+              pkgs.bun2nix.hook # Sets up node_modules from pre-fetched bun cache
+              jq
+              cmake
+              rustPlatform.bindgenHook
+              shaderc
+            ];
+
+            # Tests require runtime resources (audio devices, model files, GPU/Vulkan)
+            # not available in the Nix build sandbox
+            doCheck = false;
+
+            buildInputs = commonNativeDeps pkgs ++ (with pkgs; [
+              glib-networking
+              libx11
+            ]) ++ gstPlugins pkgs;
+
+            env = commonEnv pkgs // {
+              OPENSSL_NO_VENDOR = "1";
+              SHERPA_ONNX_ARCHIVE_DIR = "${sherpaOnnxArchiveDir}";
+            };
+
+            preFixup = ''
+              gappsWrapperArgs+=(
+                --set WEBKIT_DISABLE_DMABUF_RENDERER 1
+                --set ALSA_PLUGIN_DIR "${combinedAlsaPlugins}"
+                --prefix LD_LIBRARY_PATH : "${
+                  lib.makeLibraryPath [
+                    pkgs.vulkan-loader
+                    pkgs.onnxruntime
+                  ]
+                }"
+              )
+            '';
+
+            meta = {
+              description = "A free, open source, local-first speech-to-text application";
+              homepage = "https://github.com/OrigArith/SpeakMore";
+              license = lib.licenses.mit;
+              mainProgram = "speakmore";
+              platforms = supportedSystems;
+            };
+          };
+
+          default = self.packages.${system}.speakmore;
+        }
+      );
+
+      # NixOS module for system-level integration (udev, input group)
+      nixosModules.default =
+        { lib, pkgs, ... }:
+        {
+          imports = [ ./nix/module.nix ];
+          programs.speakmore.package = lib.mkDefault self.packages.${pkgs.stdenv.hostPlatform.system}.speakmore;
+        };
+
+      # Home-manager module for per-user service
+      homeManagerModules.default =
+        { lib, pkgs, ... }:
+        {
+          imports = [ ./nix/hm-module.nix ];
+          services.speakmore.package = lib.mkDefault self.packages.${pkgs.stdenv.hostPlatform.system}.speakmore;
+        };
+
+      # Development shell for building from source
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+          };
+        in
+        {
+          default = pkgs.mkShell {
+            buildInputs = commonNativeDeps pkgs ++ (with pkgs; [
+              # Rust toolchain
+              rustc
+              cargo
+              rust-analyzer
+              clippy
+              # Frontend
+              nodejs
+              bun
+              # Build tools
+              cargo-tauri
+              pkg-config
+              rustPlatform.bindgenHook
+              cmake
+            ]);
+
+            inherit (commonEnv pkgs)
+              ORT_LIB_LOCATION
+              ORT_PREFER_DYNAMIC_LINK
+              GST_PLUGIN_SYSTEM_PATH_1_0;
+
+            LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath [ pkgs.libayatana-appindicator pkgs.onnxruntime pkgs.vulkan-loader ]}";
+
+            # Same as wrapGAppsHook4
+            XDG_DATA_DIRS = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}:${pkgs.hicolor-icon-theme}/share";
+
+            shellHook = ''
+              echo "SpeakMore development environment"
+              bun install
+              echo "Run 'bun run tauri dev' to start"
+            '';
+          };
+        }
+      );
+    };
+}

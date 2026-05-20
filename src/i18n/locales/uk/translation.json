@@ -1,0 +1,1011 @@
+{
+  "tray": {
+    "settings": "Налаштування...",
+    "checkUpdates": "Перевірити оновлення...",
+    "copyLastTranscript": "Скопіювати останню транскрипцію",
+    "unloadModel": "Вивантажити модель",
+    "model": "Модель",
+    "quit": "Вийти",
+    "cancel": "Скасувати"
+  },
+  "sidebar": {
+    "general": "Загальні",
+    "models": "Моделі",
+    "advanced": "Розширені",
+    "postProcessing": "Постобробка",
+    "history": "Історія",
+    "debug": "Дебаг",
+    "about": "Інфо"
+  },
+  "onboarding": {
+    "subtitle": "Для початку оберіть модель транскрипції",
+    "recommended": "Рекомендовано",
+    "download": "Завантажити",
+    "downloading": "Завантаження...",
+    "customModelDescription": "Офіційно не підтримується",
+    "downloadFailed": "Завантаження не вдалося. Будь ласка, спробуйте ще раз.",
+    "modelCard": {
+      "accuracy": "точність",
+      "speed": "швидкість"
+    },
+    "models": {
+      "small": {
+        "name": "Whisper Small",
+        "description": "Швидка та досить точна"
+      },
+      "medium": {
+        "name": "Whisper Medium",
+        "description": "Хороша точність, середня швидкість"
+      },
+      "turbo": {
+        "name": "Whisper Turbo",
+        "description": "Збалансована точність та швидкість"
+      },
+      "large": {
+        "name": "Whisper Large",
+        "description": "Хороша точність, але повільна"
+      },
+      "parakeet-tdt-0.6b-v2": {
+        "name": "Parakeet V2",
+        "description": "Лише англійська. Найкраща модель для англомовних"
+      },
+      "parakeet-tdt-0.6b-v3": {
+        "name": "Parakeet V3",
+        "description": "Швидка та точна"
+      },
+      "moonshine-base": {
+        "name": "Moonshine Base",
+        "description": "Дуже швидкий, лише англійська. Добре справляється з акцентами."
+      },
+      "moonshine-tiny-streaming-en": {
+        "name": "Moonshine V2 Tiny",
+        "description": "Надшвидкий, лише англійська"
+      },
+      "moonshine-small-streaming-en": {
+        "name": "Moonshine V2 Small",
+        "description": "Швидкий, лише англійська. Добрий баланс швидкості та точності."
+      },
+      "moonshine-medium-streaming-en": {
+        "name": "Moonshine V2 Medium",
+        "description": "Лише англійська. Висока якість."
+      },
+      "breeze-asr": {
+        "name": "Breeze ASR",
+        "description": "Оптимізовано для тайванської мандаринської. Підтримка перемикання мов."
+      },
+      "sense-voice-int8": {
+        "name": "SenseVoice",
+        "description": "Дуже швидкий. Китайська, англійська, японська, корейська, кантонська."
+      },
+      "gigaam-v3-e2e-ctc": {
+        "name": "GigaAM v3",
+        "description": "Розпізнавання російського мовлення. Швидко і точно."
+      },
+      "canary-180m-flash": {
+        "name": "Canary 180M Flash",
+        "description": "Дуже швидка. Англійська, німецька, іспанська, французька. Підтримує переклад."
+      },
+      "canary-1b-v2": {
+        "name": "Canary 1B v2",
+        "description": "Точна багатомовна. 25 європейських мов. Підтримує переклад."
+      },
+      "cohere-int8": {
+        "name": "Cohere",
+        "description": "Велика, повільніша, але дуже точна багатомовна модель."
+      },
+      "qwen3-asr-0.6b-int8": {
+        "name": "Qwen3-ASR 0.6B int8",
+        "description": "Багатомовне офлайн ASR через sherpa-onnx. За замовчуванням використовується інференс на CPU."
+      },
+      "qwen3-asr-1.7b-int8": {
+        "name": "Qwen3-ASR 1.7B int8",
+        "description": "Більша ONNX-модель Qwen3-ASR для вищої точності. Використовує більше пам’яті."
+      }
+    },
+    "errors": {
+      "loadModels": "Не вдалося завантажити доступні моделі",
+      "downloadModel": "Не вдалося завантажити модель: {{error}}"
+    },
+    "permissions": {
+      "title": "Потрібні дозволи",
+      "description": "SpeakMore потребує деяких дозволів для коректної роботи.",
+      "microphone": {
+        "title": "Доступ до мікрофона",
+        "description": "Потрібен для прослуховування вашого голосу для транскрипції."
+      },
+      "accessibility": {
+        "title": "Доступ до доступності",
+        "description": "Потрібен для введення транскрибованого тексту у ваші додатки."
+      },
+      "grant": "Надати дозвіл",
+      "granted": "Надано",
+      "waiting": "Очікування...",
+      "allGranted": "Все готово!",
+      "errors": {
+        "checkFailed": "Не вдалося перевірити дозволи. Будь ласка, спробуйте ще раз.",
+        "requestFailed": "Не вдалося запросити дозвіл. Будь ласка, спробуйте ще раз."
+      }
+    },
+    "cloudAsr": {
+      "title": "Use Alibaba Cloud Qwen3-ASR",
+      "description": "Start without downloading a local model. Short recordings are sent to Alibaba Cloud for transcription.",
+      "notice": "Cloud ASR sends your audio to Alibaba Cloud.",
+      "apiKeyPlaceholder": "DashScope API key or leave blank to use DASHSCOPE_API_KEY",
+      "useCloud": "Use cloud ASR",
+      "configuring": "Configuring...",
+      "errors": {
+        "missingKey": "Add a DashScope API key or set DASHSCOPE_API_KEY before using cloud ASR."
+      }
+    },
+    "localModelsDivider": "Or download a local model"
+  },
+  "modelSelector": {
+    "custom": "Користувацька",
+    "active": "Активна",
+    "noModelsAvailable": "Немає доступних моделей",
+    "verifying": "Перевірка {{modelName}}...",
+    "verifyingGeneric": "Перевірка...",
+    "extracting": "Розпакування {{modelName}}...",
+    "extractingMultiple": "Розпакування {{count}} моделей...",
+    "extractingGeneric": "Розпакування...",
+    "downloading": "Завантаження {{percentage}}%",
+    "downloadingMultiple": "Завантаження {{count}} моделей...",
+    "modelReady": "Модель готова",
+    "loading": "Завантаження {{modelName}}...",
+    "loadingGeneric": "Завантаження...",
+    "modelError": "Помилка моделі",
+    "modelUnloaded": "Модель вивантажена",
+    "noModelDownloadRequired": "Немає моделі - потрібно завантажити",
+    "deleteModel": "Видалити {{modelName}}",
+    "switching": "Перемикання...",
+    "downloadSpeed": "{{speed}} MB/s",
+    "capabilities": {
+      "languageSelection": "Підтримує кілька мов введення",
+      "multiLanguage": "Багатомовна",
+      "translation": "Може перекладати на англійську",
+      "translate": "Перекласти на англійську",
+      "singleLanguage": "Підтримує лише цю мову",
+      "languageOnly": "Лише {{language}}"
+    },
+    "cancel": "Скасувати",
+    "cancelDownload": "Скасувати завантаження",
+    "cloudAsrTitle": "Current transcription provider: Alibaba Cloud Qwen3-ASR",
+    "localModelTitle": "Current local transcription model",
+    "cloudAsrReady": "Alibaba Cloud ASR: {{model}}",
+    "cloudAsrMissingKey": "Alibaba Cloud ASR: missing key",
+    "cloudAsrChecking": "Checking Alibaba Cloud ASR...",
+    "cloudAsrStatusError": "Alibaba Cloud ASR status unavailable",
+    "advancedSettings": "{{modelName}} advanced settings"
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "Налаштування {{model}}",
+      "noSettingsNeeded": "Ця модель працює автоматично без потреби в налаштуванні."
+    },
+    "general": {
+      "title": "Загальні",
+      "shortcut": {
+        "title": "Комбінації клавіш",
+        "description": "Налаштуйте клавіатурні скорочення для запуску запису мовлення в текст",
+        "loading": "Завантаження скорочень...",
+        "none": "Скорочення не налаштовані",
+        "notFound": "Скорочення не знайдено",
+        "pressKeys": "Натисніть клавіші...",
+        "bindings": {
+          "transcribe": {
+            "name": "Гаряча клавіша транскрипції",
+            "description": "Комбінація клавіш для запису та транскрибування вашого голосу."
+          },
+          "cancel": {
+            "name": "Гаряча клавіша скасування",
+            "description": "Комбінація клавіш для скасування поточного запису."
+          },
+          "transcribe_with_post_process": {
+            "name": "Гаряча клавіша постобробки",
+            "description": "Необов'язково: Спеціальна гаряча клавіша, яка завжди застосовує AI-постобробку до вашої транскрипції."
+          }
+        },
+        "errors": {
+          "restore": "Не вдалося відновити початкове скорочення",
+          "set": "Не вдалося встановити скорочення: {{error}}",
+          "reset": "Не вдалося скинути скорочення до початкового значення"
+        }
+      },
+      "language": {
+        "title": "Мова",
+        "description": "Оберіть мову для розпізнавання мовлення. Режим «Авто» визначить мову автоматично, а вибір конкретної мови може покращити точність.",
+        "descriptionUnsupported": "Модель Parakeet автоматично визначає мову. Ручний вибір не потрібен.",
+        "searchPlaceholder": "Пошук мов...",
+        "noResults": "Мов не знайдено",
+        "auto": "Авто"
+      },
+      "pushToTalk": {
+        "label": "Утримувати для запису (Push To Talk)",
+        "description": "Утримуйте для запису, відпустіть для зупинки"
+      },
+      "overview": {
+        "input": "Input",
+        "recordingReady": "Ready to record",
+        "engine": "Engine",
+        "local": "Local ASR",
+        "cloud": "Cloud ASR",
+        "postProcess": "Post process",
+        "history": "History",
+        "historyLimit": "{{count}} entries"
+      },
+      "groups": {
+        "recording": "Recording & Dictation",
+        "recordingDescription": "Trigger voice input quickly and keep cancellation predictable.",
+        "sound": "Sound Feedback",
+        "soundDescription": "Choose input, output, mute behavior, and confirmation sounds."
+      },
+      "quickTips": {
+        "title": "Workflow Notes",
+        "description": "Keep the main loop fast: press, speak, paste.",
+        "shortcut": "Use one primary shortcut for normal dictation and keep the cancel shortcut easy to reach.",
+        "overlay": "The overlay stays lightweight so it can confirm state without stealing attention."
+      },
+      "reliability": {
+        "title": "Reliability Posture",
+        "description": "SpeakMore stays quiet until you need it, then returns text to the active app.",
+        "localFirst": "Local first",
+        "lowFriction": "Low friction",
+        "private": "Private"
+      }
+    },
+    "models": {
+      "title": "Моделі транскрипції",
+      "description": "Виберіть модель транскрипції або завантажте додаткові моделі. Різні моделі пропонують різні рівні точності та швидкості.",
+      "downloaded": "Завантажено",
+      "available": "Доступні для завантаження",
+      "deleteConfirm": "Ви впевнені, що хочете видалити {{modelName}}? Вам потрібно буде завантажити її знову, щоб використовувати.",
+      "deleteActiveConfirm": "{{modelName}} — ваша активна модель. Видалення зупинить транскрипцію, доки ви не оберете нову модель. Ви впевнені?",
+      "deleteTitle": "Видалити модель",
+      "filters": {
+        "all": "Усі",
+        "multiLanguage": "Багатомовні",
+        "translation": "Переклад",
+        "allLanguages": "Усі мови"
+      },
+      "noModelsMatch": "Жодна модель не відповідає цьому фільтру.",
+      "yourModels": "Завантажені моделі",
+      "availableModels": "Доступні для завантаження",
+      "asr": {
+        "title": "Transcription Provider",
+        "description": "Choose whether SpeakMore transcribes with local models or a configured cloud ASR provider.",
+        "provider": "Provider",
+        "providers": {
+          "built_in_local": "Built-in local models",
+          "aliyun_qwen3_asr_flash": "Alibaba Cloud Qwen3-ASR",
+          "aliyun_qwen3_asr_realtime": "Alibaba Cloud Qwen3-ASR Realtime"
+        },
+        "apiKey": "DashScope API key",
+        "apiKeyPlaceholder": "Leave blank to use DASHSCOPE_API_KEY",
+        "model": "Model",
+        "modelPlaceholder": "{{model}}",
+        "privacyNotice": "Cloud ASR sends each recording to Alibaba Cloud. Use it only for audio you are comfortable sending to that provider.",
+        "noFallback": "Cloud fallback is never automatic.",
+        "checkStatus": "Check config",
+        "checking": "Checking...",
+        "apiKeySource": {
+          "not_required": "not required",
+          "settings": "saved settings",
+          "environment": "DASHSCOPE_API_KEY",
+          "missing": "missing"
+        },
+        "status": {
+          "missingKey": "DashScope API key is missing. Save a key here or set DASHSCOPE_API_KEY.",
+          "ready": "Ready. API key source: {{source}}.",
+          "checkFailed": "Failed to check ASR provider configuration.",
+          "providerChangeFailed": "Failed to switch transcription provider.",
+          "saveFailed": "Failed to save ASR provider settings."
+        },
+        "activeCloudSummary": "Current transcription method: Alibaba Cloud Qwen3-ASR ({{model}}).",
+        "activeLocalSummary": "Current transcription method: built-in local models.",
+        "localModelsInactive": "Cloud ASR is currently active. Local models here are used only after switching back to local transcription."
+      },
+      "profiles": {
+        "title": "Transcription Profiles",
+        "description": "Switch a complete transcription setup for different writing tasks.",
+        "provider": "Provider",
+        "language": "Language",
+        "postProcess": "Post process",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "apply": "Apply profile",
+        "items": {
+          "quick_input_local": {
+            "name": "Quick input (local)",
+            "description": "Fast local dictation without post-processing."
+          },
+          "qwen_realtime_dictation": {
+            "name": "Realtime dictation",
+            "description": "Cloud realtime transcription with Qwen3-ASR."
+          },
+          "clean_message": {
+            "name": "Clean message",
+            "description": "Transcribe with Qwen3-ASR realtime, then clean the result for messages."
+          }
+        }
+      },
+      "localAsr": {
+        "title": "Local ASR",
+        "description": "Private offline models for daily dictation.",
+        "privacy": "Audio stays on this device."
+      },
+      "cloudAsr": {
+        "title": "Cloud ASR",
+        "description": "Higher-capability providers when configured."
+      },
+      "advanced": {
+        "title": "{{model}} advanced settings",
+        "familyScope": "Saved for all {{family}} models.",
+        "whisperFamilyName": "Whisper",
+        "qwenFamilyName": "Qwen3-ASR",
+        "languageLabel": "Language",
+        "languagePlaceholder": "Select language",
+        "languageDescription": "Auto detection is safest. Pick a language only when you know the recording language.",
+        "customVocabularyLabel": "Custom vocabulary",
+        "customVocabularyPlaceholder": "One phrase per line",
+        "whisperCustomVocabularyHint": "Whisper uses these phrases as the initial prompt. This helps with names, terms, brands, and proper nouns.",
+        "qwenCustomVocabularyHint": "Qwen3-ASR uses these phrases as hotwords/context hints. This is best for names, terminology, brands, and proper nouns.",
+        "translateToEnglishLabel": "Translate to English",
+        "translateToEnglishDescription": "Whisper can transcribe non-English speech directly into English.",
+        "qwenTranslationUnavailable": "Qwen3-ASR ONNX does not expose a translate-to-English switch. Use post-processing translation after transcription if needed.",
+        "qwenPromptLimitation": "This is not a full prompt box. The current ONNX path only supports hotwords/context hints, not the official Qwen3-ASR API's full system/context prompt for translation, summaries, formatting, or rewriting.",
+        "maxNewTokensLabel": "Max output tokens",
+        "maxNewTokensDescription": "Default 384. Caps generated transcript tokens; increase only if output is cut off.",
+        "maxTotalLenLabel": "Max context length",
+        "maxTotalLenDescription": "Default 1024. Budget for context, audio placeholders, and output; higher values use more memory.",
+        "settingsFileLabel": "Settings file",
+        "settingsPathLoading": "Loading settings path...",
+        "saveFailed": "Failed to save advanced settings.",
+        "resetFailed": "Failed to reset advanced settings.",
+        "validation": {
+          "tooManyVocabulary": "Custom vocabulary can include at most 200 entries.",
+          "vocabularyTooLong": "\"{{entry}}\" is longer than 80 characters.",
+          "unsupportedVocabularyChars": "\"{{entry}}\" contains unsupported characters."
+        },
+        "qwenHotwordsLabel": "Hotwords / term hints",
+        "qwenHotwordsPlaceholder": "One name, term, or brand per line",
+        "qwenHotwordsHint": "Only biases recognition toward these entries. Use names, domain terms, brands, and proper nouns; do not write instructions.",
+        "expertSettingsLabel": "Expert parameters",
+        "expertSettingsSummary": "Usually leave these alone; open only when long recordings are cut off or incomplete."
+      },
+      "series": {
+        "speakMore": {
+          "title": "Моделі SpeakMore",
+          "description": "Додаткові локальні моделі, додані в цьому fork, зокрема новіші багатомовні ASR-варіанти.",
+          "badge": "SpeakMore"
+        },
+        "handy": {
+          "title": "Моделі Handy",
+          "description": "Оригінальний каталог моделей Handy, доступний через дзеркало моделей Handy.",
+          "badge": "Handy"
+        },
+        "custom": {
+          "title": "Власні моделі",
+          "description": "Файли, сумісні з Whisper, які ви помістили в папку моделей.",
+          "badge": "Власна"
+        }
+      }
+    },
+    "sound": {
+      "title": "Звук",
+      "microphone": {
+        "title": "Мікрофон",
+        "description": "Оберіть бажаний мікрофон",
+        "placeholder": "Оберіть мікрофон...",
+        "loading": "Завантаження..."
+      },
+      "audioFeedback": {
+        "label": "Звукове сповіщення",
+        "description": "Відтворювати звук при початку та зупинці запису"
+      },
+      "outputDevice": {
+        "title": "Пристрій виводу",
+        "description": "Оберіть бажаний пристрій виводу звуку для звукових сповіщень",
+        "placeholder": "Оберіть пристрій виводу...",
+        "loading": "Завантаження..."
+      },
+      "volume": {
+        "title": "Гучність",
+        "description": "Налаштуйте гучність звукових сповіщень"
+      }
+    },
+    "advanced": {
+      "title": "Розширені",
+      "groups": {
+        "app": "Додаток",
+        "output": "Вивід",
+        "transcription": "Транскрипція",
+        "history": "Історія",
+        "experimental": "Експериментальне"
+      },
+      "experimentalToggle": {
+        "label": "Експериментальні функції",
+        "description": "Увімкнути експериментальні функції, які ще в розробці."
+      },
+      "lazyStreamClose": {
+        "label": "Залишати мікрофон увімкненим між транскрипціями",
+        "description": "Залишає потік мікрофона відкритим протягом 30 секунд після зупинки запису, зменшуючи затримку при послідовних транскрипціях. Може погіршити якість звуку Bluetooth."
+      },
+      "acceleration": {
+        "whisper": {
+          "title": "Прискорення Whisper",
+          "description": "Апаратне прискорення для моделей Whisper. Автоматичний режим використовує GPU за наявності (Metal на macOS, Vulkan на Windows/Linux)."
+        },
+        "ort": {
+          "title": "Прискорення ONNX",
+          "description": "Апаратне прискорення для моделей ONNX (Parakeet, Canary, Moonshine тощо). DirectML на Windows є експериментальним. Моделі можуть не виконувати транскрипцію."
+        },
+        "gpuDevice": {
+          "title": "Пристрій GPU",
+          "description": "Виберіть GPU для інференсу Whisper. Автоматично обирає виділений GPU.",
+          "auto": "Авто"
+        }
+      },
+      "startHidden": {
+        "label": "Запуск у фоні",
+        "description": "Запускати в системному треї без відкриття вікна"
+      },
+      "autostart": {
+        "label": "Запуск при старті системи",
+        "description": "Автоматично запускати SpeakMore при вході в систему"
+      },
+      "showTrayIcon": {
+        "label": "Показати значок у треї",
+        "description": "Відображати значок SpeakMore у системному треї."
+      },
+      "overlay": {
+        "title": "Позиція оверлею",
+        "description": "Показувати візуальний оверлей під час запису та транскрипції. На Linux рекомендовано «Немає»",
+        "options": {
+          "none": "Немає",
+          "bottom": "Внизу",
+          "top": "Вгорі"
+        }
+      },
+      "pasteMethod": {
+        "title": "Метод вставки",
+        "description": "Оберіть спосіб вставки тексту. Прямий: емулює набір тексту. Немає: пропускає вставку, оновлює лише історію/буфер обміну.",
+        "options": {
+          "clipboard": "Буфер обміну ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "Буфер обміну (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "Буфер обміну (Shift+Insert)",
+          "direct": "Прямий",
+          "none": "Немає",
+          "externalScript": "Зовнішній скрипт"
+        },
+        "externalScriptPlaceholder": "/path/to/your/script.sh"
+      },
+      "typingTool": {
+        "title": "Інструмент введення",
+        "description": "Виберіть, який інструмент введення в Linux використовувати для методу прямого вставлення. Auto автоматично визначить і використає найкращий доступний інструмент для вашої системи.",
+        "options": {
+          "auto": "Auto (Рекомендовано)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "Робота з буфером обміну",
+        "description": "Не змінювати буфер обміну зберігає поточний вміст буфера після транскрипції. Копіювати в буфер обміну залишає результат транскрипції в буфері після вставки.",
+        "options": {
+          "dontModify": "Не змінювати буфер обміну",
+          "copyToClipboard": "Копіювати в буфер обміну"
+        }
+      },
+      "autoSubmit": {
+        "title": "Автоматичне надсилання",
+        "description": "Автоматично надсилає вибрану комбінацію клавіш після вставки тексту. Cmd+Enter застосовується на macOS, тоді як Windows/Linux використовують Super+Enter.",
+        "options": {
+          "off": "Вимк.",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "Перекласти на англійську",
+        "description": "Автоматично перекладати мовлення з інших мов англійською під час транскрипції.",
+        "descriptionUnsupported": "Переклад не підтримується моделлю {{model}}."
+      },
+      "modelUnload": {
+        "title": "Вивантаження моделі",
+        "description": "Автоматично звільняти пам'ять GPU/CPU, коли модель не використовується протягом вказаного часу",
+        "options": {
+          "never": "Ніколи",
+          "immediately": "Негайно",
+          "min2": "Через 2 хвилини",
+          "min5": "Через 5 хвилин",
+          "min10": "Через 10 хвилин",
+          "min15": "Через 15 хвилин",
+          "hour1": "Через 1 годину",
+          "sec15": "Через 15 секунд (Дебаг)"
+        }
+      },
+      "customWords": {
+        "title": "Власні слова",
+        "description": "Додайте слова, які часто неправильно розпізнаються під час транскрипції. Система автоматично виправлятиме схожі за звучанням слова відповідно до вашого списку.",
+        "placeholder": "Додати слово",
+        "add": "Додати",
+        "remove": "Видалити {{word}}",
+        "duplicate": "\"{{word}}\" вже існує"
+      }
+    },
+    "postProcessing": {
+      "title": "Постобробка",
+      "hotkey": {
+        "title": "Гаряча клавіша"
+      },
+      "api": {
+        "title": "API (сумісний з OpenAI)",
+        "provider": {
+          "title": "Провайдер",
+          "description": "Оберіть OpenAI-сумісного провайдера"
+        },
+        "appleIntelligence": {
+          "title": "Apple Intelligence",
+          "description": "Працює повністю на пристрої. API-ключ або доступ до мережі не потрібні.",
+          "requirements": "Потрібен Mac з Apple Silicon під управлінням macOS Tahoe (26.0) або новіше. Apple Intelligence має бути увімкнений у Системних налаштуваннях.",
+          "unavailable": "Apple Intelligence недоступний на цьому пристрої. Потрібен Mac з Apple Silicon під управлінням macOS Tahoe (26.0) або новіше з увімкненим Apple Intelligence в Системних налаштуваннях."
+        },
+        "baseUrl": {
+          "title": "Базова URL-адреса",
+          "description": "Базова URL-адреса API для обраного провайдера. Лише власний провайдер можна редагувати.",
+          "placeholder": "https://api.openai.com/v1"
+        },
+        "apiKey": {
+          "title": "API-ключ",
+          "description": "API-ключ для обраного провайдера",
+          "placeholder": "sk-..."
+        },
+        "model": {
+          "title": "Модель",
+          "descriptionApple": "Вкажіть необов'язковий числовий ліміт токенів або залиште стандартний пресет на пристрої.",
+          "descriptionCustom": "Вкажіть ідентифікатор моделі, який очікує ваш ендпоінт.",
+          "descriptionDefault": "Оберіть модель, надану обраним провайдером",
+          "placeholderApple": "Apple Intelligence",
+          "placeholderWithOptions": "Шукайте або оберіть модель",
+          "placeholderNoOptions": "Введіть назву моделі",
+          "refreshModels": "Оновити моделі",
+          "deprecatedOption": "{{model}} (deprecated)"
+        },
+        "status": {
+          "missingBaseUrl": "Base URL is required for the custom provider.",
+          "missingApiKey": "API key is required for the selected provider.",
+          "missingModel": "Model is required before post-processing can run.",
+          "refreshFailed": "Failed to refresh models for this provider.",
+          "separator": " "
+        },
+        "capabilities": {
+          "summary": "Compatibility: structured output: {{structured}}; thinking/reasoning: {{reasoning}}.",
+          "deepseek": "DeepSeek uses JSON object mode. Thinking is disabled by default; high/max can be enabled explicitly. Legacy deepseek-chat and deepseek-reasoner are deprecated on 2026-07-24.",
+          "structured": {
+            "none": "plain text fallback",
+            "open_ai_json_schema": "OpenAI JSON Schema",
+            "json_object": "JSON object mode"
+          },
+          "reasoning": {
+            "none": "not sent",
+            "open_ai_reasoning_effort": "OpenAI reasoning_effort",
+            "open_router_reasoning": "OpenRouter reasoning object",
+            "deep_seek_thinking": "DeepSeek thinking control"
+          }
+        },
+        "reasoning": {
+          "title": "Thinking",
+          "description": "Controls DeepSeek thinking mode for post-processing. Disabled is fastest and avoids reasoning compatibility issues.",
+          "options": {
+            "disabled": "Disabled",
+            "high": "High",
+            "max": "Max"
+          }
+        }
+      },
+      "prompts": {
+        "title": "Промпт",
+        "selectedPrompt": {
+          "title": "Обраний промпт",
+          "description": "Оберіть шаблон для покращення транскрипцій або створіть новий. Використовуйте ${output} у тексті промпта для посилання на захоплену транскрипцію."
+        },
+        "noPrompts": "Немає доступних промптів",
+        "selectPrompt": "Оберіть промпт",
+        "createNew": "Створити новий промпт",
+        "promptLabel": "Назва промпта",
+        "promptLabelPlaceholder": "Введіть назву промпта",
+        "promptInstructions": "Інструкції промпта",
+        "promptInstructionsPlaceholder": "Напишіть інструкції для виконання після транскрипції. Приклад: Покращити граматику та ясність для наступного тексту: ${output}",
+        "promptTip": "Порада: Використовуйте <code>${output}</code> для вставки транскрибованого тексту у ваш промпт.",
+        "updatePrompt": "Оновити промпт",
+        "deletePrompt": "Видалити промпт",
+        "createPrompt": "Створити промпт",
+        "cancel": "Скасувати",
+        "selectToEdit": "Оберіть промпт вище для перегляду та редагування його деталей.",
+        "createFirst": "Натисніть «Створити новий промпт» вище, щоб створити ваш перший промпт постобробки."
+      },
+      "presets": {
+        "title": "Presets",
+        "selectedPreset": {
+          "title": "Selected Preset",
+          "description": "Select, test, or edit a reusable post-processing preset. Use ${output} in the template to reference the captured transcript."
+        },
+        "noPresets": "No presets available",
+        "selectPreset": "Select a preset",
+        "createNew": "New Preset",
+        "builtinLabel": "{{name}} (built-in)",
+        "builtinNotice": "Built-in presets cannot be edited directly. Duplicate this preset to customize it.",
+        "nameLabel": "Preset Name",
+        "namePlaceholder": "Enter preset name",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Describe when to use this preset",
+        "outputKindLabel": "Output",
+        "outputKinds": {
+          "plainText": "Plain text",
+          "markdown": "Markdown"
+        },
+        "templateLabel": "Prompt Template",
+        "templatePlaceholder": "Write the instructions to run after transcription. Example: Clean up the following transcript: ${output}",
+        "templateTip": "Use <code>${output}</code> to insert the transcribed text in your preset.",
+        "createPreset": "Create Preset",
+        "savePreset": "Save Preset",
+        "duplicatePreset": "Duplicate",
+        "deletePreset": "Delete",
+        "cancel": "Cancel",
+        "selectToEdit": "Select a preset above to view and test it.",
+        "createFirst": "Create a preset to start post-processing transcriptions.",
+        "preview": {
+          "inputLabel": "Test Input",
+          "inputPlaceholder": "Paste sample ASR text to test this preset",
+          "sampleText": "Today we need to wire the Qwen ASR provider, then run bun run build and cargo test.",
+          "run": "Test Preset",
+          "running": "Testing...",
+          "latency": "{{ms}} ms",
+          "outputLabel": "Output",
+          "failed": "Preset test failed.",
+          "metadata": "Provider: {{provider}} · Model: {{model}}",
+          "unknown": "Unknown"
+        },
+        "systemTemplateLabel": "System Instruction",
+        "systemTemplatePlaceholder": "Tell the model how to transform the transcript. Example: Translate the user's transcript into natural English and return only the result.",
+        "userTemplateLabel": "User Message Template",
+        "userTemplatePlaceholder": "Use ${output} where the transcript should appear. Usually this can stay as ${output}."
+      },
+      "overview": {
+        "title": "Status",
+        "ready": "Post-processing is enabled and ready.",
+        "needsConfiguration": "Post-processing is enabled but needs provider, model, API key, or preset configuration.",
+        "disabled": "Post-processing is configured here. Enable it when you want the post-processing shortcut to run.",
+        "toggle": {
+          "label": "Enable post-processing",
+          "description": "Registers the post-processing shortcut and allows transcriptions to be refined by the selected LLM preset."
+        },
+        "items": {
+          "status": "Status",
+          "provider": "Provider",
+          "model": "Model",
+          "apiKey": "API key",
+          "preset": "Preset"
+        },
+        "values": {
+          "enabled": "Enabled",
+          "disabled": "Disabled",
+          "configured": "Configured",
+          "missing": "Missing",
+          "notRequired": "Not required"
+        }
+      }
+    },
+    "history": {
+      "title": "Історія",
+      "openFolder": "Відкрити папку записів",
+      "loading": "Завантаження історії...",
+      "empty": "Транскрипцій поки немає. Почніть запис, щоб створити історію!",
+      "copyToClipboard": "Копіювати транскрипцію в буфер обміну",
+      "save": "Зберегти транскрипцію",
+      "unsave": "Видалити зі збережених",
+      "delete": "Видалити запис",
+      "deleteError": "Не вдалося видалити запис. Спробуйте ще раз.",
+      "retranscribe": "Перетранскрибувати",
+      "retranscribeError": "Не вдалося перетранскрибувати. Будь ласка, спробуйте ще раз.",
+      "transcribing": "Транскрибування...",
+      "transcriptionFailed": "Транскрипція не вдалася. Ви можете перетранскрибувати за допомогою іконки повтору.",
+      "details": "Details",
+      "detailLoading": "Loading details...",
+      "detailError": "Failed to load history details. Please try again.",
+      "noDetailItems": "No records yet.",
+      "status": "Status",
+      "asr": "ASR",
+      "model": "Model",
+      "language": "Language",
+      "preset": "Preset",
+      "finalText": "Final",
+      "rawText": "Raw",
+      "transcriptionRuns": "ASR attempts",
+      "postProcessRuns": "Post-process attempts",
+      "events": "Events",
+      "provider": "Provider",
+      "latency": "Latency",
+      "ms": "ms",
+      "error": "Error",
+      "run": "Run",
+      "runId": "Run ID",
+      "userText": "Human edit",
+      "edit": "Edit final text",
+      "editText": "Edited final text",
+      "saveEdit": "Save edit",
+      "cancelEdit": "Cancel",
+      "restoreGenerated": "Restore generated text",
+      "editError": "Failed to save edit. Please try again.",
+      "clearEditError": "Failed to restore generated text. Please try again."
+    },
+    "debug": {
+      "title": "Дебаг",
+      "logDirectory": {
+        "title": "Папка логів",
+        "description": "Розташування файлів логів"
+      },
+      "logLevel": {
+        "title": "Рівень логування",
+        "description": "Встановіть детальність логування"
+      },
+      "updateChecks": {
+        "label": "Перевірка оновлень",
+        "description": "Автоматично перевіряти наявність нових версій SpeakMore"
+      },
+      "soundTheme": {
+        "label": "Звукова тема",
+        "description": "Оберіть звукову тему для сповіщень про початок і зупинку запису"
+      },
+      "wordCorrectionThreshold": {
+        "title": "Поріг корекції слів",
+        "description": "Чутливість для корекції власних слів"
+      },
+      "historyLimit": {
+        "title": "Ліміт історії",
+        "description": "Максимальна кількість записів в історії",
+        "entries": "записів"
+      },
+      "recordingRetention": {
+        "title": "Автовидалення записів",
+        "description": "Автоматично видаляти старі записи для економії місця",
+        "never": "Ніколи",
+        "preserveLimit": "Зберігати останні {{count}}",
+        "days3": "Через 3 дні",
+        "weeks2": "Через 2 тижні",
+        "months3": "Через 3 місяці",
+        "placeholder": "Оберіть період зберігання..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "Постійно активний мікрофон",
+        "description": "Тримати мікрофон активним для швидшого відгуку"
+      },
+      "clamshellMicrophone": {
+        "title": "Мікрофон у закритому режимі",
+        "description": "Мікрофон для використання при закритій кришці ноутбука"
+      },
+      "postProcessingToggle": {
+        "label": "Постобробка",
+        "description": "Увімкнути покращення тексту за допомогою AI після транскрипції"
+      },
+      "muteWhileRecording": {
+        "label": "Вимкнути звук під час запису",
+        "description": "Вимикати системний звук під час запису"
+      },
+      "appendTrailingSpace": {
+        "label": "Додавати пробіл в кінці",
+        "description": "Додавати пробіл після вставленої транскрипції"
+      },
+      "keyboardImplementation": {
+        "title": "Реалізація клавіатури",
+        "description": "Оберіть бекенд для клавіатурних скорочень.",
+        "bindingsReset": "Клавіатурні скорочення були несумісні та скинуті до значень за замовчуванням",
+        "options": {
+          "tauri": "Tauri Global Shortcut",
+          "speakMoreKeys": "SpeakMore Keys"
+        }
+      },
+      "paths": {
+        "appData": "Дані програми:",
+        "models": "Моделі:",
+        "settings": "Налаштування:",
+        "title": "Debug Paths",
+        "description": "Display internal file paths and directories for debugging purposes"
+      },
+      "pasteDelay": {
+        "title": "Затримка вставки",
+        "description": "Затримка перед надсиланням натискання клавіші вставки (у мілісекундах). Збільшіть, якщо вставляється неправильний текст."
+      },
+      "recordingBuffer": {
+        "title": "Додатковий буфер запису",
+        "description": "Додатковий час (у мілісекундах) для продовження запису після відпускання клавіші, щоб захопити завершальний звук. 0 = без додаткового буфера."
+      },
+      "contextProbe": {
+        "title": "Context Probe",
+        "description": "Capture the current macOS focused text element for compatibility testing.",
+        "privacyWarning": "This stores the current focused text field content in local history. Do not run it in private or sensitive fields.",
+        "capture": "Capture Focused Context",
+        "captureCountdown": "Capturing in {{seconds}}s",
+        "captureArmed": "Switch to the target text field before capture starts in {{seconds}}s.",
+        "clear": "Clear Probe History",
+        "captureSuccess": "Focused context captured",
+        "clearSuccess": "Context probe history cleared",
+        "empty": "No context probes captured yet.",
+        "recent": "Recent captures",
+        "attributes": "Available attributes",
+        "noText": "No text was captured for this probe.",
+        "truncated": "Truncated",
+        "separator": "/",
+        "latencyValue": "{{value}}ms",
+        "textLengthValue": "{{value}} chars",
+        "fields": {
+          "app": "App",
+          "window": "Window",
+          "role": "Role",
+          "selection": "Selection",
+          "textLength": "Text length",
+          "latency": "Latency"
+        },
+        "status": {
+          "success": "Success",
+          "permission_denied": "Permission denied",
+          "no_focused_element": "No focused element",
+          "not_text_input": "Not text input",
+          "blocked_secure_field": "Secure field blocked",
+          "attribute_unavailable": "Attribute unavailable",
+          "unsupported_platform": "Unsupported platform",
+          "error": "Error"
+        },
+        "confidence": {
+          "high": "High confidence",
+          "medium": "Medium confidence",
+          "low": "Low confidence",
+          "none": "No confidence"
+        },
+        "errors": {
+          "load": "Failed to load context probe history",
+          "capture": "Failed to capture focused context",
+          "clear": "Failed to clear context probe history"
+        }
+      }
+    },
+    "about": {
+      "title": "Інфо",
+      "version": {
+        "title": "Версія",
+        "description": "Поточна версія SpeakMore"
+      },
+      "appDataDirectory": {
+        "title": "Папка даних програми",
+        "description": "Розташування даних SpeakMore"
+      },
+      "sourceCode": {
+        "title": "Вихідний код",
+        "description": "Переглядайте код, перевіряйте зміни та долучайтеся через публічний репозиторій GitHub.",
+        "button": "Відкрити GitHub"
+      },
+      "supportDevelopment": {
+        "title": "Підтримати розробку",
+        "description": "Допоможіть покращити SpeakMore: повідомляйте про проблеми, діліться відгуками та обговорюйте зі спільнотою робочі процеси мовлення в текст.",
+        "button": "Долучитися до обговорення"
+      },
+      "acknowledgments": {
+        "title": "Подяки",
+        "whisper": {
+          "title": "Whisper.cpp",
+          "description": "Високопродуктивний інференс моделі автоматичного розпізнавання мовлення Whisper від OpenAI",
+          "details": "SpeakMore використовує Whisper.cpp для швидкої локальної обробки мовлення в текст. Дякуємо за чудову роботу Георгію Герганову та контриб'юторам."
+        },
+        "originalProject": {
+          "title": "Handy",
+          "description": "Оригінальний проєкт з відкритим кодом",
+          "details": "Based on the MIT-licensed Handy project."
+        }
+      },
+      "brand": {
+        "description": "SpeakMore — надійне середовище для перетворення мовлення на текст із локальним і хмарним ASR, гнучким керуванням моделями та зрозумілими точками розширення для користувацьких workflow.",
+        "credit": ""
+      }
+    }
+  },
+  "footer": {
+    "downloadingModel": "Завантаження {{model}}...",
+    "checkingUpdates": "Перевірка оновлень...",
+    "updateAvailable": "Доступне оновлення: {{version}}",
+    "updateAvailableShort": "Доступне оновлення",
+    "upToDate": "Актуальна версія",
+    "downloadUpdate": "Завантажити оновлення",
+    "restart": "Перезапустити",
+    "updateCheckingDisabled": "Перевірка оновлень вимкнена",
+    "downloading": "Завантаження... {{progress}}%",
+    "installing": "Встановлення...",
+    "preparing": "Підготовка...",
+    "checkForUpdates": "Перевірити оновлення",
+    "portableUpdateTitle": "Manual update required",
+    "portableUpdateMessage": "Portable installs cannot be updated automatically. To update: download the latest NSIS installer from GitHub Releases, install it to the same folder, then copy your Data/ folder (settings, models, recordings) from the old version to the new one.",
+    "portableUpdateButton": "Open GitHub Releases",
+    "statusReady": "Ready",
+    "modeLocal": "Local mode",
+    "modeCloud": "Cloud mode",
+    "privacyFirst": "Private by default"
+  },
+  "common": {
+    "loading": "Завантаження...",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "reset": "Скинути",
+    "add": "Додати",
+    "remove": "Видалити",
+    "delete": "Видалити",
+    "edit": "Редагувати",
+    "create": "Створити",
+    "update": "Оновити",
+    "close": "Закрити",
+    "open": "Відкрити",
+    "default": "За замовчуванням",
+    "enabled": "Увімкнено",
+    "disabled": "Вимкнено",
+    "on": "Увімк.",
+    "off": "Вимк.",
+    "yes": "Так",
+    "no": "Ні",
+    "noOptionsFound": "Опцій не знайдено",
+    "saving": "Saving..."
+  },
+  "accessibility": {
+    "permissionsRequired": "Потрібні права доступу",
+    "permissionsDescription": "SpeakMore потребує дозволи доступності для введення транскрибованого тексту.",
+    "openSettings": "Відкрити Системні налаштування",
+    "dismiss": "Закрити"
+  },
+  "errors": {
+    "loadDirectory": "Помилка завантаження папки: {{error}}",
+    "micPermissionDeniedTitle": "Доступ до мікрофона заборонено",
+    "micPermissionDenied": {
+      "generic": "Доступ до мікрофона було заборонено операційною системою. Надайте дозвіл на використання мікрофона в налаштуваннях системи.",
+      "windows": "Увімкніть доступ до мікрофона в Параметри → Конфіденційність і безпека → Мікрофон (включно з доступом класичних програм).",
+      "macos": "Надайте доступ до мікрофона в Системні налаштування → Конфіденційність і безпека → Мікрофон.",
+      "linux": "Надайте доступ до мікрофона в налаштуваннях звуку або конфіденційності вашої системи."
+    },
+    "noInputDeviceTitle": "Мікрофон не знайдено",
+    "noInputDevice": "Не виявлено жодного пристрою введення звуку. Підключіть мікрофон або гарнітуру та спробуйте знову.",
+    "recordingFailed": "Не вдалося розпочати запис: {{error}}",
+    "modelLoadFailed": "Не вдалося завантажити модель: {{model}}",
+    "modelLoadFailedUnknown": "невідома модель",
+    "pasteFailedTitle": "Не вдалося вставити текст",
+    "pasteFailed": "Не вдалося вставити текст до активної програми.",
+    "postProcessFallbackTitle": "Post-Processing Failed",
+    "postProcessFallbackDescription": "The original transcription was used."
+  },
+  "appLanguage": {
+    "title": "Мова інтерфейсу",
+    "description": "Змінити мову інтерфейсу SpeakMore"
+  },
+  "overlay": {
+    "transcribing": "Обробка...",
+    "processing": "Постобробка...",
+    "realtime": {
+      "connecting": "Connecting",
+      "listening": "Listening",
+      "transcribing": "Transcribing",
+      "finalizing": "Finalizing",
+      "error": "Error",
+      "waiting": "Waiting for speech..."
+    },
+    "recording": "Recording..."
+  },
+  "app": {
+    "name": "SpeakMore",
+    "taglineShort": "SpeakMore. Build Better. Grow Faster.",
+    "statusReady": "Ready"
+  },
+  "sidebarDescriptions": {
+    "general": "Recording, shortcuts, sound, and everyday controls.",
+    "models": "Local and cloud transcription engines.",
+    "advanced": "Output, startup, overlay, and experimental behavior.",
+    "history": "Review, copy, retry, and clean up past transcripts.",
+    "postprocessing": "Refine transcripts with reusable AI presets.",
+    "debug": "Logs and diagnostics for development builds.",
+    "about": "Version, storage paths, credits, and source links."
+  }
+}

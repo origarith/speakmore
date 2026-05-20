@@ -1,0 +1,1011 @@
+{
+  "tray": {
+    "settings": "Impostazioni...",
+    "checkUpdates": "Verifica aggiornamenti...",
+    "copyLastTranscript": "Copia l'ultima trascrizione",
+    "unloadModel": "Rilascia modello",
+    "model": "Modello",
+    "quit": "Esci",
+    "cancel": "Annulla"
+  },
+  "sidebar": {
+    "general": "Generale",
+    "models": "Modelli",
+    "advanced": "Avanzate",
+    "postProcessing": "Post-Elaborazione",
+    "history": "Cronologia",
+    "debug": "Debug",
+    "about": "Informazioni"
+  },
+  "onboarding": {
+    "subtitle": "Per cominciare, scegli un modello di riconoscimento vocale",
+    "recommended": "Raccomandato",
+    "download": "Scarica",
+    "downloading": "Download in corso...",
+    "customModelDescription": "Non ufficialmente supportato",
+    "downloadFailed": "Download fallito. Riprova.",
+    "modelCard": {
+      "accuracy": "accuratezza",
+      "speed": "velocità"
+    },
+    "models": {
+      "small": {
+        "name": "Whisper Small",
+        "description": "Veloce e abbastanza accurato."
+      },
+      "medium": {
+        "name": "Whisper Medium",
+        "description": "Buona accuratezza, velocità nella media"
+      },
+      "turbo": {
+        "name": "Whisper Turbo",
+        "description": "Bilanciato fra accuratezza e velocità."
+      },
+      "large": {
+        "name": "Whisper Large",
+        "description": "Buona accuratezza, ma lento."
+      },
+      "parakeet-tdt-0.6b-v2": {
+        "name": "Parakeet V2",
+        "description": "Solo inglese. Il miglior modello per chi parla inglese."
+      },
+      "parakeet-tdt-0.6b-v3": {
+        "name": "Parakeet V3",
+        "description": "Veloce e accurato"
+      },
+      "moonshine-base": {
+        "name": "Moonshine Base",
+        "description": "Molto veloce, solo inglese. Gestisce bene gli accenti."
+      },
+      "moonshine-tiny-streaming-en": {
+        "name": "Moonshine V2 Tiny",
+        "description": "Ultra-veloce, solo inglese"
+      },
+      "moonshine-small-streaming-en": {
+        "name": "Moonshine V2 Small",
+        "description": "Veloce, solo inglese. Buon equilibrio tra velocità e precisione."
+      },
+      "moonshine-medium-streaming-en": {
+        "name": "Moonshine V2 Medium",
+        "description": "Solo inglese. Alta qualità."
+      },
+      "breeze-asr": {
+        "name": "Breeze ASR",
+        "description": "Ottimizzato per il mandarino taiwanese. Supporto per il code-switching."
+      },
+      "sense-voice-int8": {
+        "name": "SenseVoice",
+        "description": "Molto veloce. Cinese, inglese, giapponese, coreano, cantonese."
+      },
+      "gigaam-v3-e2e-ctc": {
+        "name": "GigaAM v3",
+        "description": "Riconoscimento vocale in russo. Veloce e preciso."
+      },
+      "canary-180m-flash": {
+        "name": "Canary 180M Flash",
+        "description": "Molto veloce. Inglese, tedesco, spagnolo, francese. Supporta la traduzione."
+      },
+      "canary-1b-v2": {
+        "name": "Canary 1B v2",
+        "description": "Multilingue accurato. 25 lingue europee. Supporta la traduzione."
+      },
+      "cohere-int8": {
+        "name": "Cohere",
+        "description": "Un modello grande, più lento, ma molto accurato e multilingue."
+      },
+      "qwen3-asr-0.6b-int8": {
+        "name": "Qwen3-ASR 0.6B int8",
+        "description": "ASR offline multilingue tramite sherpa-onnx. Per impostazione predefinita usa l’inferenza su CPU."
+      },
+      "qwen3-asr-1.7b-int8": {
+        "name": "Qwen3-ASR 1.7B int8",
+        "description": "Modello ONNX Qwen3-ASR più grande per una maggiore accuratezza. Usa più memoria."
+      }
+    },
+    "errors": {
+      "loadModels": "Errore di caricamento dei modelli disponibili",
+      "downloadModel": "Errore nel download del modello: {{error}}"
+    },
+    "permissions": {
+      "title": "Permessi Richiesti",
+      "description": "SpeakMore ha bisogno di alcuni permessi per funzionare correttamente.",
+      "microphone": {
+        "title": "Accesso al Microfono",
+        "description": "Necessario per sentire la tua voce per la trascrizione."
+      },
+      "accessibility": {
+        "title": "Accesso all'Accessibilità",
+        "description": "Necessario per digitare il testo trascritto nelle tue applicazioni."
+      },
+      "grant": "Concedi Permesso",
+      "granted": "Concesso",
+      "waiting": "In attesa...",
+      "allGranted": "Tutto pronto!",
+      "errors": {
+        "checkFailed": "Impossibile verificare i permessi. Riprova.",
+        "requestFailed": "Impossibile richiedere il permesso. Riprova."
+      }
+    },
+    "cloudAsr": {
+      "title": "Use Alibaba Cloud Qwen3-ASR",
+      "description": "Start without downloading a local model. Short recordings are sent to Alibaba Cloud for transcription.",
+      "notice": "Cloud ASR sends your audio to Alibaba Cloud.",
+      "apiKeyPlaceholder": "DashScope API key or leave blank to use DASHSCOPE_API_KEY",
+      "useCloud": "Use cloud ASR",
+      "configuring": "Configuring...",
+      "errors": {
+        "missingKey": "Add a DashScope API key or set DASHSCOPE_API_KEY before using cloud ASR."
+      }
+    },
+    "localModelsDivider": "Or download a local model"
+  },
+  "modelSelector": {
+    "custom": "Personalizzato",
+    "active": "Attivo",
+    "switching": "Cambio...",
+    "noModelsAvailable": "Nessun modello disponibile",
+    "verifying": "Verifica di {{modelName}}...",
+    "verifyingGeneric": "Verifica...",
+    "extracting": "Estrazione di {{modelName}}...",
+    "extractingMultiple": "Estrazione di {{count}} modelli...",
+    "extractingGeneric": "Estrazione...",
+    "downloading": "Download {{percentage}}%",
+    "downloadingMultiple": "Download di {{count}} modelli...",
+    "modelReady": "Modello Pronto",
+    "loading": "Caricamento di {{modelName}}...",
+    "loadingGeneric": "Caricamento...",
+    "modelError": "Errore del Modello",
+    "modelUnloaded": "Modello Disattivato",
+    "noModelDownloadRequired": "Nessun Modello - Download Richiesto",
+    "deleteModel": "Elimina {{modelName}}",
+    "downloadSpeed": "{{speed}} MB/s",
+    "capabilities": {
+      "languageSelection": "Supporta più lingue di input",
+      "multiLanguage": "Multilingua",
+      "translation": "Può tradurre in inglese",
+      "translate": "Traduci in inglese",
+      "singleLanguage": "Supporta solo questa lingua",
+      "languageOnly": "Solo {{language}}"
+    },
+    "cancel": "Annulla",
+    "cancelDownload": "Annulla download",
+    "cloudAsrTitle": "Current transcription provider: Alibaba Cloud Qwen3-ASR",
+    "localModelTitle": "Current local transcription model",
+    "cloudAsrReady": "Alibaba Cloud ASR: {{model}}",
+    "cloudAsrMissingKey": "Alibaba Cloud ASR: missing key",
+    "cloudAsrChecking": "Checking Alibaba Cloud ASR...",
+    "cloudAsrStatusError": "Alibaba Cloud ASR status unavailable",
+    "advancedSettings": "{{modelName}} advanced settings"
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "Impostazioni di {{model}}",
+      "noSettingsNeeded": "Questo modello funziona automaticamente senza bisogno di configurazione."
+    },
+    "models": {
+      "title": "Modelli di Trascrizione",
+      "description": "Seleziona un modello di trascrizione o scarica modelli aggiuntivi. Diversi modelli offrono diversi livelli di accuratezza e velocità.",
+      "downloaded": "Scaricati",
+      "available": "Disponibili per il Download",
+      "deleteConfirm": "Sei sicuro di voler eliminare {{modelName}}? Dovrai scaricarlo di nuovo per usarlo.",
+      "deleteActiveConfirm": "{{modelName}} è il tuo modello attivo. Eliminarlo interromperà le trascrizioni fino a quando non selezionerai un nuovo modello. Sei sicuro?",
+      "deleteTitle": "Elimina modello",
+      "filters": {
+        "all": "Tutti",
+        "multiLanguage": "Multilingua",
+        "translation": "Traduzione",
+        "allLanguages": "Tutte le lingue"
+      },
+      "noModelsMatch": "Nessun modello corrisponde a questo filtro.",
+      "yourModels": "Modelli scaricati",
+      "availableModels": "Disponibili per il Download",
+      "asr": {
+        "title": "Transcription Provider",
+        "description": "Choose whether SpeakMore transcribes with local models or a configured cloud ASR provider.",
+        "provider": "Provider",
+        "providers": {
+          "built_in_local": "Built-in local models",
+          "aliyun_qwen3_asr_flash": "Alibaba Cloud Qwen3-ASR",
+          "aliyun_qwen3_asr_realtime": "Alibaba Cloud Qwen3-ASR Realtime"
+        },
+        "apiKey": "DashScope API key",
+        "apiKeyPlaceholder": "Leave blank to use DASHSCOPE_API_KEY",
+        "model": "Model",
+        "modelPlaceholder": "{{model}}",
+        "privacyNotice": "Cloud ASR sends each recording to Alibaba Cloud. Use it only for audio you are comfortable sending to that provider.",
+        "noFallback": "Cloud fallback is never automatic.",
+        "checkStatus": "Check config",
+        "checking": "Checking...",
+        "apiKeySource": {
+          "not_required": "not required",
+          "settings": "saved settings",
+          "environment": "DASHSCOPE_API_KEY",
+          "missing": "missing"
+        },
+        "status": {
+          "missingKey": "DashScope API key is missing. Save a key here or set DASHSCOPE_API_KEY.",
+          "ready": "Ready. API key source: {{source}}.",
+          "checkFailed": "Failed to check ASR provider configuration.",
+          "providerChangeFailed": "Failed to switch transcription provider.",
+          "saveFailed": "Failed to save ASR provider settings."
+        },
+        "activeCloudSummary": "Current transcription method: Alibaba Cloud Qwen3-ASR ({{model}}).",
+        "activeLocalSummary": "Current transcription method: built-in local models.",
+        "localModelsInactive": "Cloud ASR is currently active. Local models here are used only after switching back to local transcription."
+      },
+      "profiles": {
+        "title": "Transcription Profiles",
+        "description": "Switch a complete transcription setup for different writing tasks.",
+        "provider": "Provider",
+        "language": "Language",
+        "postProcess": "Post process",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "apply": "Apply profile",
+        "items": {
+          "quick_input_local": {
+            "name": "Quick input (local)",
+            "description": "Fast local dictation without post-processing."
+          },
+          "qwen_realtime_dictation": {
+            "name": "Realtime dictation",
+            "description": "Cloud realtime transcription with Qwen3-ASR."
+          },
+          "clean_message": {
+            "name": "Clean message",
+            "description": "Transcribe with Qwen3-ASR realtime, then clean the result for messages."
+          }
+        }
+      },
+      "localAsr": {
+        "title": "Local ASR",
+        "description": "Private offline models for daily dictation.",
+        "privacy": "Audio stays on this device."
+      },
+      "cloudAsr": {
+        "title": "Cloud ASR",
+        "description": "Higher-capability providers when configured."
+      },
+      "advanced": {
+        "title": "{{model}} advanced settings",
+        "familyScope": "Saved for all {{family}} models.",
+        "whisperFamilyName": "Whisper",
+        "qwenFamilyName": "Qwen3-ASR",
+        "languageLabel": "Language",
+        "languagePlaceholder": "Select language",
+        "languageDescription": "Auto detection is safest. Pick a language only when you know the recording language.",
+        "customVocabularyLabel": "Custom vocabulary",
+        "customVocabularyPlaceholder": "One phrase per line",
+        "whisperCustomVocabularyHint": "Whisper uses these phrases as the initial prompt. This helps with names, terms, brands, and proper nouns.",
+        "qwenCustomVocabularyHint": "Qwen3-ASR uses these phrases as hotwords/context hints. This is best for names, terminology, brands, and proper nouns.",
+        "translateToEnglishLabel": "Translate to English",
+        "translateToEnglishDescription": "Whisper can transcribe non-English speech directly into English.",
+        "qwenTranslationUnavailable": "Qwen3-ASR ONNX does not expose a translate-to-English switch. Use post-processing translation after transcription if needed.",
+        "qwenPromptLimitation": "This is not a full prompt box. The current ONNX path only supports hotwords/context hints, not the official Qwen3-ASR API's full system/context prompt for translation, summaries, formatting, or rewriting.",
+        "maxNewTokensLabel": "Max output tokens",
+        "maxNewTokensDescription": "Default 384. Caps generated transcript tokens; increase only if output is cut off.",
+        "maxTotalLenLabel": "Max context length",
+        "maxTotalLenDescription": "Default 1024. Budget for context, audio placeholders, and output; higher values use more memory.",
+        "settingsFileLabel": "Settings file",
+        "settingsPathLoading": "Loading settings path...",
+        "saveFailed": "Failed to save advanced settings.",
+        "resetFailed": "Failed to reset advanced settings.",
+        "validation": {
+          "tooManyVocabulary": "Custom vocabulary can include at most 200 entries.",
+          "vocabularyTooLong": "\"{{entry}}\" is longer than 80 characters.",
+          "unsupportedVocabularyChars": "\"{{entry}}\" contains unsupported characters."
+        },
+        "qwenHotwordsLabel": "Hotwords / term hints",
+        "qwenHotwordsPlaceholder": "One name, term, or brand per line",
+        "qwenHotwordsHint": "Only biases recognition toward these entries. Use names, domain terms, brands, and proper nouns; do not write instructions.",
+        "expertSettingsLabel": "Expert parameters",
+        "expertSettingsSummary": "Usually leave these alone; open only when long recordings are cut off or incomplete."
+      },
+      "series": {
+        "speakMore": {
+          "title": "Modelli SpeakMore",
+          "description": "Modelli locali aggiuntivi inclusi in questo fork, comprese opzioni ASR multilingue più recenti.",
+          "badge": "SpeakMore"
+        },
+        "handy": {
+          "title": "Modelli Handy",
+          "description": "Catalogo upstream dei modelli Handy servito dal mirror dei modelli Handy.",
+          "badge": "Handy"
+        },
+        "custom": {
+          "title": "Modelli personalizzati",
+          "description": "File compatibili con Whisper che hai inserito nella cartella dei modelli.",
+          "badge": "Personalizzato"
+        }
+      }
+    },
+    "general": {
+      "title": "Generale",
+      "shortcut": {
+        "title": "Scorciatoie di SpeakMore",
+        "description": "Configura le scorciatoie per attivare la trascrizione vocale",
+        "loading": "Caricamento delle scorciatoie...",
+        "none": "Nessuna scorciatoia configurata",
+        "notFound": "Scorciatoia non trovata",
+        "pressKeys": "Premi i tasti...",
+        "bindings": {
+          "transcribe": {
+            "name": "Scorciatoia Trascrizione",
+            "description": "La scorciatoia da tastiera per registrare e trascrivere la tua voce."
+          },
+          "cancel": {
+            "name": "Scorciatoia Annulla",
+            "description": "La scorciatoia da tastiera per annullare la registrazione in corso."
+          },
+          "transcribe_with_post_process": {
+            "name": "Tasto di post-elaborazione",
+            "description": "Facoltativo: Un tasto di scelta rapida dedicato che applica sempre la post-elaborazione IA alla trascrizione."
+          }
+        },
+        "errors": {
+          "restore": "Errore nel ripristino della scorciatoia originale",
+          "set": "Errore nella configurazione della scorciatoia: {{error}}",
+          "reset": "Errore nella reinizializzazione della scorciatoia al valore originale"
+        }
+      },
+      "language": {
+        "title": "Lingua",
+        "description": "Scegli la lingua per il riconoscimento vocale. Auto la determinerà automaticamente, mentre scegliere una lingua specifica può migliorare l'accuratezza per quella lingua.",
+        "descriptionUnsupported": "Il modello Parakeet sceglie automaticamente la lingua. Non serve scegliere manualmente.",
+        "searchPlaceholder": "Cerca lingue...",
+        "noResults": "Nessuna lingua trovata",
+        "auto": "Auto"
+      },
+      "pushToTalk": {
+        "label": "Premi per Parlare",
+        "description": "Tieni premuto per parlare, rilascia per interrompere"
+      },
+      "overview": {
+        "input": "Input",
+        "recordingReady": "Ready to record",
+        "engine": "Engine",
+        "local": "Local ASR",
+        "cloud": "Cloud ASR",
+        "postProcess": "Post process",
+        "history": "History",
+        "historyLimit": "{{count}} entries"
+      },
+      "groups": {
+        "recording": "Recording & Dictation",
+        "recordingDescription": "Trigger voice input quickly and keep cancellation predictable.",
+        "sound": "Sound Feedback",
+        "soundDescription": "Choose input, output, mute behavior, and confirmation sounds."
+      },
+      "quickTips": {
+        "title": "Workflow Notes",
+        "description": "Keep the main loop fast: press, speak, paste.",
+        "shortcut": "Use one primary shortcut for normal dictation and keep the cancel shortcut easy to reach.",
+        "overlay": "The overlay stays lightweight so it can confirm state without stealing attention."
+      },
+      "reliability": {
+        "title": "Reliability Posture",
+        "description": "SpeakMore stays quiet until you need it, then returns text to the active app.",
+        "localFirst": "Local first",
+        "lowFriction": "Low friction",
+        "private": "Private"
+      }
+    },
+    "sound": {
+      "title": "Suono",
+      "microphone": {
+        "title": "Microfono",
+        "description": "Scegli il microfono preferito",
+        "placeholder": "Scegli microfono...",
+        "loading": "Caricamento..."
+      },
+      "audioFeedback": {
+        "label": "Feedback Audio",
+        "description": "Riproduci un suono quando la registrazione inizia e finisce"
+      },
+      "outputDevice": {
+        "title": "Dispositivo di Output",
+        "description": "Scegli il dispositivo di output per il feedback audio",
+        "placeholder": "Scegli dispositivo di output...",
+        "loading": "Caricamento..."
+      },
+      "volume": {
+        "title": "Volume",
+        "description": "Regola il volume del feedback audio"
+      }
+    },
+    "advanced": {
+      "title": "Avanzate",
+      "groups": {
+        "app": "App",
+        "output": "Output",
+        "transcription": "Trascrizione",
+        "history": "Cronologia",
+        "experimental": "Sperimentale"
+      },
+      "experimentalToggle": {
+        "label": "Funzionalità Sperimentali",
+        "description": "Abilita le funzionalità sperimentali ancora in fase di sviluppo."
+      },
+      "lazyStreamClose": {
+        "label": "Mantieni il microfono aperto tra le trascrizioni",
+        "description": "Mantiene lo stream del microfono aperto per 30 secondi dopo l'arresto della registrazione, riducendo la latenza per trascrizioni consecutive. Potrebbe degradare la qualità audio Bluetooth."
+      },
+      "acceleration": {
+        "whisper": {
+          "title": "Accelerazione Whisper",
+          "description": "Accelerazione hardware per i modelli Whisper. Auto utilizza la GPU se disponibile (Metal su macOS, Vulkan su Windows/Linux)."
+        },
+        "ort": {
+          "title": "Accelerazione ONNX",
+          "description": "Accelerazione hardware per i modelli ONNX (Parakeet, Canary, Moonshine, ecc.). DirectML su Windows è sperimentale. I modelli potrebbero non riuscire a trascrivere."
+        },
+        "gpuDevice": {
+          "title": "Dispositivo GPU",
+          "description": "Seleziona quale GPU utilizzare per l'inferenza Whisper. Auto sceglie la GPU dedicata.",
+          "auto": "Auto"
+        }
+      },
+      "startHidden": {
+        "label": "Avvia in Background",
+        "description": "Avvia l'applicazione in background senza aprire la finestra."
+      },
+      "autostart": {
+        "label": "Avvia all'Accensione",
+        "description": "Avvia SpeakMore automaticamente quando accedi al computer."
+      },
+      "showTrayIcon": {
+        "label": "Mostra icona nella barra di sistema",
+        "description": "Mostra l'icona di SpeakMore nella barra di sistema."
+      },
+      "overlay": {
+        "title": "Posizione della Sovrimpressione",
+        "description": "Mostra un feedback visivo in sovrimpressione durante la registrazione e la trascrizione. Su Linux si raccomanda 'Nessuna'.",
+        "options": {
+          "none": "Nessuna",
+          "bottom": "In basso",
+          "top": "In alto"
+        }
+      },
+      "pasteMethod": {
+        "title": "Metodo di Incolla",
+        "description": "Scegli come viene inserito il testo. Diretto: simula l'input da tastiera. Nessuno: non incolla, aggiorna solo la cronologia/appunti.",
+        "options": {
+          "clipboard": "Appunti ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "Appunti (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "Appunti (Shift+Insert)",
+          "direct": "Diretto",
+          "none": "Nessuno",
+          "externalScript": "Script esterno"
+        },
+        "externalScriptPlaceholder": "/percorso/del/tuo/script.sh"
+      },
+      "typingTool": {
+        "title": "Strumento di digitazione",
+        "description": "Scegli quale strumento di digitazione Linux usare per il metodo di incolla diretto. Auto rileverà e userà automaticamente lo strumento migliore disponibile per il tuo sistema.",
+        "options": {
+          "auto": "Auto (Consigliato)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "Gestione Appunti",
+        "description": "Non Modificare gli Appunti mantiene il contenuto dei tuoi appunti dopo la trascrizione. Copia negli Appunti lascia il risultato della trascrizione negli appunti dopo aver incollato.",
+        "options": {
+          "dontModify": "Non Modificare gli Appunti",
+          "copyToClipboard": "Copia negli Appunti"
+        }
+      },
+      "autoSubmit": {
+        "title": "Invio automatico",
+        "description": "Invia automaticamente la combinazione di tasti selezionata dopo l'inserimento del testo. Cmd+Enter si applica su macOS, mentre Windows/Linux usano Super+Enter.",
+        "options": {
+          "off": "Disattivato",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "Traduci in inglese",
+        "description": "Traduci automaticamente in inglese la voce in altre lingue durante la trascrizione.",
+        "descriptionUnsupported": "La traduzione non è supportata dal modello {{model}}."
+      },
+      "modelUnload": {
+        "title": "Disattiva Model",
+        "description": "Libera automaticamente la memoria della GPU/CPU quando il modello non viene utilizzato per un certo periodo",
+        "options": {
+          "never": "Mai",
+          "immediately": "Immediatamente",
+          "min2": "Dopo 2 minuti",
+          "min5": "Dopo 5 minuti",
+          "min10": "Dopo 10 minuti",
+          "min15": "Dopo 15 minuti",
+          "hour1": "Dopo 1 ora",
+          "sec15": "Dopo 15 secondi (Debug)"
+        }
+      },
+      "customWords": {
+        "title": "Parole personalizzate",
+        "description": "Aggiungi parole che vengono spesso fraintese o scritte in modo errato durante la trascrizione. Il sistema correggerà automaticamente le parole dal suono simile in modo che corrispondano al tuo elenco.",
+        "placeholder": "Aggiungi una parola",
+        "add": "Aggiungi",
+        "remove": "Rimuovi {{word}}",
+        "duplicate": "\"{{word}}\" esiste già"
+      }
+    },
+    "postProcessing": {
+      "title": "Post-Elaborazione",
+      "hotkey": {
+        "title": "Tasto di scelta rapida"
+      },
+      "api": {
+        "title": "API (Compatibile con OpenAI)",
+        "provider": {
+          "title": "Provider",
+          "description": "Seleziona un provider compatibile con OpenAI."
+        },
+        "appleIntelligence": {
+          "title": "Apple Intelligence",
+          "description": "Si esegue completamente in locale. Non è necessaria una chiave API né l'accesso alla rete.",
+          "requirements": "Necessita di un Mac con Apple Silicon e macOS Tahoe (26.0) o successivi. Apple Intelligence deve essere abilitata nelle Impostazioni di Sistema.",
+          "unavailable": "Apple Intelligence non è disponibile su questo dispositivo. Necessita di un Mac con Apple Silicon e macOS Tahoe (26.0) o successivi con Apple Intelligence abilitata nelle Impostazioni di Sistema."
+        },
+        "baseUrl": {
+          "title": "URL Base",
+          "description": "URL di base per l'API del provider selezionato. Solo per i provider personalizzati.",
+          "placeholder": "https://api.openai.com/v1"
+        },
+        "apiKey": {
+          "title": "Chiave API",
+          "description": "Chiave API per il provider selezionato.",
+          "placeholder": "sk-..."
+        },
+        "model": {
+          "title": "Modello",
+          "descriptionApple": "Fornisci un limite numerico facoltativo per i token o mantieni l'impostazione predefinita sul dispositivo.",
+          "descriptionCustom": "Fornisci l'identificatore del modello previsto dal tuo endpoint personalizzato.",
+          "descriptionDefault": "Scegli un modello reso disponibile dal provider selezionato.",
+          "placeholderApple": "Apple Intelligence",
+          "placeholderWithOptions": "Cerca o scegli un modello",
+          "placeholderNoOptions": "Digita il nome di un modello",
+          "refreshModels": "Aggiorna modelli",
+          "deprecatedOption": "{{model}} (deprecated)"
+        },
+        "status": {
+          "missingBaseUrl": "Base URL is required for the custom provider.",
+          "missingApiKey": "API key is required for the selected provider.",
+          "missingModel": "Model is required before post-processing can run.",
+          "refreshFailed": "Failed to refresh models for this provider.",
+          "separator": " "
+        },
+        "capabilities": {
+          "summary": "Compatibility: structured output: {{structured}}; thinking/reasoning: {{reasoning}}.",
+          "deepseek": "DeepSeek uses JSON object mode. Thinking is disabled by default; high/max can be enabled explicitly. Legacy deepseek-chat and deepseek-reasoner are deprecated on 2026-07-24.",
+          "structured": {
+            "none": "plain text fallback",
+            "open_ai_json_schema": "OpenAI JSON Schema",
+            "json_object": "JSON object mode"
+          },
+          "reasoning": {
+            "none": "not sent",
+            "open_ai_reasoning_effort": "OpenAI reasoning_effort",
+            "open_router_reasoning": "OpenRouter reasoning object",
+            "deep_seek_thinking": "DeepSeek thinking control"
+          }
+        },
+        "reasoning": {
+          "title": "Thinking",
+          "description": "Controls DeepSeek thinking mode for post-processing. Disabled is fastest and avoids reasoning compatibility issues.",
+          "options": {
+            "disabled": "Disabled",
+            "high": "High",
+            "max": "Max"
+          }
+        }
+      },
+      "prompts": {
+        "title": "Prompt",
+        "selectedPrompt": {
+          "title": "Prompt Selezionato",
+          "description": "Seleziona un template per migliorare le trascrizioni o creane uno nuovo. Usa ${output} nel prompt per fare riferimento alla trascrizione."
+        },
+        "noPrompts": "Nessun prompt disponibile",
+        "selectPrompt": "Scegli un prompt",
+        "createNew": "Crea un nuovo prompt",
+        "promptLabel": "Etichetta del Prompt",
+        "promptLabelPlaceholder": "Inserisci il nome del prompt",
+        "promptInstructions": "Istruzioni del Prompt",
+        "promptInstructionsPlaceholder": "Scrivi le istruzioni da eseguire dopo la trascrizione. Esempio: Migliora la grammatica e la chiarezza per il seguente testo: ${output}",
+        "promptTip": "Suggerimento: Usa <code>${output}</code> per inserire il testo trascritto nel tuo prompt.",
+        "updatePrompt": "Aggiorna Prompt",
+        "deletePrompt": "Elimina Prompt",
+        "createPrompt": "Crea Prompt",
+        "cancel": "Annulla",
+        "selectToEdit": "Scegli un prompt qui sopra per visualizzare o modificare i dettagli.",
+        "createFirst": "Clicca 'Crea un nuovo prompt' qui sopra per creare il tuo primo prompt di post-elaborazione."
+      },
+      "presets": {
+        "title": "Presets",
+        "selectedPreset": {
+          "title": "Selected Preset",
+          "description": "Select, test, or edit a reusable post-processing preset. Use ${output} in the template to reference the captured transcript."
+        },
+        "noPresets": "No presets available",
+        "selectPreset": "Select a preset",
+        "createNew": "New Preset",
+        "builtinLabel": "{{name}} (built-in)",
+        "builtinNotice": "Built-in presets cannot be edited directly. Duplicate this preset to customize it.",
+        "nameLabel": "Preset Name",
+        "namePlaceholder": "Enter preset name",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Describe when to use this preset",
+        "outputKindLabel": "Output",
+        "outputKinds": {
+          "plainText": "Plain text",
+          "markdown": "Markdown"
+        },
+        "templateLabel": "Prompt Template",
+        "templatePlaceholder": "Write the instructions to run after transcription. Example: Clean up the following transcript: ${output}",
+        "templateTip": "Use <code>${output}</code> to insert the transcribed text in your preset.",
+        "createPreset": "Create Preset",
+        "savePreset": "Save Preset",
+        "duplicatePreset": "Duplicate",
+        "deletePreset": "Delete",
+        "cancel": "Cancel",
+        "selectToEdit": "Select a preset above to view and test it.",
+        "createFirst": "Create a preset to start post-processing transcriptions.",
+        "preview": {
+          "inputLabel": "Test Input",
+          "inputPlaceholder": "Paste sample ASR text to test this preset",
+          "sampleText": "Today we need to wire the Qwen ASR provider, then run bun run build and cargo test.",
+          "run": "Test Preset",
+          "running": "Testing...",
+          "latency": "{{ms}} ms",
+          "outputLabel": "Output",
+          "failed": "Preset test failed.",
+          "metadata": "Provider: {{provider}} · Model: {{model}}",
+          "unknown": "Unknown"
+        },
+        "systemTemplateLabel": "System Instruction",
+        "systemTemplatePlaceholder": "Tell the model how to transform the transcript. Example: Translate the user's transcript into natural English and return only the result.",
+        "userTemplateLabel": "User Message Template",
+        "userTemplatePlaceholder": "Use ${output} where the transcript should appear. Usually this can stay as ${output}."
+      },
+      "overview": {
+        "title": "Status",
+        "ready": "Post-processing is enabled and ready.",
+        "needsConfiguration": "Post-processing is enabled but needs provider, model, API key, or preset configuration.",
+        "disabled": "Post-processing is configured here. Enable it when you want the post-processing shortcut to run.",
+        "toggle": {
+          "label": "Enable post-processing",
+          "description": "Registers the post-processing shortcut and allows transcriptions to be refined by the selected LLM preset."
+        },
+        "items": {
+          "status": "Status",
+          "provider": "Provider",
+          "model": "Model",
+          "apiKey": "API key",
+          "preset": "Preset"
+        },
+        "values": {
+          "enabled": "Enabled",
+          "disabled": "Disabled",
+          "configured": "Configured",
+          "missing": "Missing",
+          "notRequired": "Not required"
+        }
+      }
+    },
+    "history": {
+      "title": "Cronologia",
+      "openFolder": "Apri la cartella delle registrazioni",
+      "loading": "Caricamento cronologia...",
+      "empty": "Non ci sono ancora trascrizioni. Comincia a registrare per costruire la tua cronologia!",
+      "copyToClipboard": "Copia la trascrizione negli appunti",
+      "save": "Salva la trascrizione",
+      "unsave": "Rimuovi dai salvataggi",
+      "delete": "Elimina elemento",
+      "deleteError": "Errore nell'eliminazione dell'elemento. Riprova.",
+      "retranscribe": "Ri-trascrivere",
+      "retranscribeError": "Impossibile ri-trascrivere. Riprova.",
+      "transcribing": "Trascrizione in corso...",
+      "transcriptionFailed": "Trascrizione fallita. Puoi ri-trascrivere usando l'icona di ripetizione.",
+      "details": "Details",
+      "detailLoading": "Loading details...",
+      "detailError": "Failed to load history details. Please try again.",
+      "noDetailItems": "No records yet.",
+      "status": "Status",
+      "asr": "ASR",
+      "model": "Model",
+      "language": "Language",
+      "preset": "Preset",
+      "finalText": "Final",
+      "rawText": "Raw",
+      "transcriptionRuns": "ASR attempts",
+      "postProcessRuns": "Post-process attempts",
+      "events": "Events",
+      "provider": "Provider",
+      "latency": "Latency",
+      "ms": "ms",
+      "error": "Error",
+      "run": "Run",
+      "runId": "Run ID",
+      "userText": "Human edit",
+      "edit": "Edit final text",
+      "editText": "Edited final text",
+      "saveEdit": "Save edit",
+      "cancelEdit": "Cancel",
+      "restoreGenerated": "Restore generated text",
+      "editError": "Failed to save edit. Please try again.",
+      "clearEditError": "Failed to restore generated text. Please try again."
+    },
+    "debug": {
+      "title": "Debug",
+      "logDirectory": {
+        "title": "Cartella dei Log",
+        "description": "Cartella dove vengono salvati i file di log"
+      },
+      "logLevel": {
+        "title": "Livello di Log",
+        "description": "Scegli il livello di dettaglio dei log"
+      },
+      "updateChecks": {
+        "label": "Controlla aggiornamenti",
+        "description": "Controlla automaticamente la disponibilità di nuove versioni di SpeakMore"
+      },
+      "soundTheme": {
+        "label": "Tema Sonoro",
+        "description": "Scegli un tema sonoro per il feedback di inizio e fine registrazione"
+      },
+      "wordCorrectionThreshold": {
+        "title": "Soglia di Correzione Parole",
+        "description": "Sensibilità per la correzione delle parole personalizzate"
+      },
+      "historyLimit": {
+        "title": "Limite della Cronologia",
+        "description": "Massimo numero di elementi da conservare nella cronologia",
+        "entries": "elementi"
+      },
+      "recordingRetention": {
+        "title": "Eliminazione Automatica Registrazioni",
+        "description": "Elimina automaticamente le registrazioni vecchie per liberare spazio",
+        "never": "Mai",
+        "preserveLimit": "Conserva le ultime {{count}}",
+        "days3": "Dopo 3 giorni",
+        "weeks2": "Dopo 2 settimane",
+        "months3": "Dopo 3 mesi",
+        "placeholder": "Seleziona periodo di conservazione..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "Microfono Sempre Attivo",
+        "description": "Tieni il microfono attivo per una risposta più rapida"
+      },
+      "clamshellMicrophone": {
+        "title": "Microfono a portatile chiuso",
+        "description": "Microfono da usare quando il portatile è chiuso"
+      },
+      "postProcessingToggle": {
+        "label": "Post-Elaborazione",
+        "description": "Abilita il miglioramento della trascrizione con IA"
+      },
+      "muteWhileRecording": {
+        "label": "Silenzia durante la registrazione",
+        "description": "Silenzia l'audio di sistema durante la registrazione"
+      },
+      "appendTrailingSpace": {
+        "label": "Aggiungi Spazio Finale",
+        "description": "Aggiungi uno spazio dopo la trascrizione incollata"
+      },
+      "keyboardImplementation": {
+        "title": "Implementazione tastiera",
+        "description": "Scegli il backend per le scorciatoie da tastiera.",
+        "bindingsReset": "Le scorciatoie da tastiera erano incompatibili e sono state ripristinate ai valori predefiniti",
+        "options": {
+          "tauri": "Tauri Global Shortcut",
+          "speakMoreKeys": "SpeakMore Keys"
+        }
+      },
+      "paths": {
+        "appData": "Dati App:",
+        "models": "Modelli:",
+        "settings": "Impostazioni:",
+        "title": "Debug Paths",
+        "description": "Display internal file paths and directories for debugging purposes"
+      },
+      "pasteDelay": {
+        "title": "Ritardo incolla",
+        "description": "Ritardo prima dell'invio del tasto incolla (in millisecondi). Aumentare se viene incollato il testo sbagliato."
+      },
+      "recordingBuffer": {
+        "title": "Buffer di registrazione extra",
+        "description": "Tempo extra (in millisecondi) per continuare a registrare dopo aver rilasciato il tasto, per catturare l'audio finale. 0 = nessun buffer extra."
+      },
+      "contextProbe": {
+        "title": "Context Probe",
+        "description": "Capture the current macOS focused text element for compatibility testing.",
+        "privacyWarning": "This stores the current focused text field content in local history. Do not run it in private or sensitive fields.",
+        "capture": "Capture Focused Context",
+        "captureCountdown": "Capturing in {{seconds}}s",
+        "captureArmed": "Switch to the target text field before capture starts in {{seconds}}s.",
+        "clear": "Clear Probe History",
+        "captureSuccess": "Focused context captured",
+        "clearSuccess": "Context probe history cleared",
+        "empty": "No context probes captured yet.",
+        "recent": "Recent captures",
+        "attributes": "Available attributes",
+        "noText": "No text was captured for this probe.",
+        "truncated": "Truncated",
+        "separator": "/",
+        "latencyValue": "{{value}}ms",
+        "textLengthValue": "{{value}} chars",
+        "fields": {
+          "app": "App",
+          "window": "Window",
+          "role": "Role",
+          "selection": "Selection",
+          "textLength": "Text length",
+          "latency": "Latency"
+        },
+        "status": {
+          "success": "Success",
+          "permission_denied": "Permission denied",
+          "no_focused_element": "No focused element",
+          "not_text_input": "Not text input",
+          "blocked_secure_field": "Secure field blocked",
+          "attribute_unavailable": "Attribute unavailable",
+          "unsupported_platform": "Unsupported platform",
+          "error": "Error"
+        },
+        "confidence": {
+          "high": "High confidence",
+          "medium": "Medium confidence",
+          "low": "Low confidence",
+          "none": "No confidence"
+        },
+        "errors": {
+          "load": "Failed to load context probe history",
+          "capture": "Failed to capture focused context",
+          "clear": "Failed to clear context probe history"
+        }
+      }
+    },
+    "about": {
+      "title": "Informazioni",
+      "version": {
+        "title": "Versione",
+        "description": "Versione attuale di SpeakMore"
+      },
+      "appDataDirectory": {
+        "title": "Cartella Dati App",
+        "description": "Cartella in cui SpeakMore salva i dati"
+      },
+      "sourceCode": {
+        "title": "Codice sorgente",
+        "description": "Esamina il codice, controlla le modifiche e contribuisci tramite il repository GitHub pubblico.",
+        "button": "Apri GitHub"
+      },
+      "supportDevelopment": {
+        "title": "Sostieni lo sviluppo",
+        "description": "Aiuta a migliorare SpeakMore segnalando problemi, condividendo feedback e discutendo workflow voce-testo con la community.",
+        "button": "Partecipa alla discussione"
+      },
+      "acknowledgments": {
+        "title": "Ringraziamenti",
+        "whisper": {
+          "title": "Whisper.cpp",
+          "description": "Inferenza ad alte prestazioni del modello di riconoscimento vocale automatico Whisper di OpenAI",
+          "details": "SpeakMore usa Whisper.cpp per il riconoscimento vocale veloce in locale. Grazie a Georgi Gerganov e collaboratori per il fantastico lavoro."
+        },
+        "originalProject": {
+          "title": "Handy",
+          "description": "Progetto open source originale",
+          "details": "Based on the MIT-licensed Handy project."
+        }
+      },
+      "brand": {
+        "description": "SpeakMore è uno spazio di lavoro affidabile per la trascrizione da voce a testo, con ASR locale e cloud, gestione flessibile dei modelli e chiari punti di estensione per workflow personalizzati.",
+        "credit": ""
+      }
+    }
+  },
+  "footer": {
+    "downloadingModel": "Download di {{model}}...",
+    "checkingUpdates": "Controllo aggiornamenti...",
+    "updateAvailable": "Aggiornamento disponibile: {{version}}",
+    "updateAvailableShort": "Aggiornamento disponibile",
+    "upToDate": "Aggiornato",
+    "downloadUpdate": "Scarica Aggiornamento",
+    "restart": "Riavvia",
+    "updateCheckingDisabled": "Controllo Aggiornamenti Disabilitato",
+    "downloading": "Download... {{progress}}%",
+    "installing": "Installazione...",
+    "preparing": "Preparazione...",
+    "checkForUpdates": "Controlla aggiornamenti",
+    "portableUpdateTitle": "Aggiornamento manuale necessario",
+    "portableUpdateMessage": "Le installazioni portatili non possono essere aggiornate automaticamente. Per aggiornare: scarica l'ultima versione del programma di installazione NSIS da GitHub Releases, installala nella stessa cartella, quindi copia la cartella Data/ (impostazioni, modelli, registrazioni) dalla vecchia versione a quella nuova..",
+    "portableUpdateButton": "Apri i rilasci su GitHub",
+    "statusReady": "Ready",
+    "modeLocal": "Local mode",
+    "modeCloud": "Cloud mode",
+    "privacyFirst": "Private by default"
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "reset": "Reimposta",
+    "add": "Aggiungi",
+    "remove": "Rimuovi",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "create": "Crea",
+    "update": "Aggiorna",
+    "close": "Chiudi",
+    "open": "Apri",
+    "default": "Predefinito",
+    "enabled": "Abilitato",
+    "disabled": "Disabilitato",
+    "on": "On",
+    "off": "Off",
+    "yes": "Sì",
+    "no": "No",
+    "noOptionsFound": "Nessuna opzione trovata",
+    "saving": "Saving..."
+  },
+  "accessibility": {
+    "permissionsRequired": "Richiesti Permessi di Accessibilità",
+    "permissionsDescription": "SpeakMore ha bisogno dei permessi di accessibilità per digitare il testo trascritto.",
+    "openSettings": "Apri Impostazioni di Sistema",
+    "dismiss": "Ignora"
+  },
+  "errors": {
+    "loadDirectory": "Errore di caricamento cartella: {{error}}",
+    "micPermissionDeniedTitle": "Accesso al microfono negato",
+    "micPermissionDenied": {
+      "generic": "L'accesso al microfono è stato negato dal sistema operativo. Concedi l'autorizzazione al microfono nelle impostazioni di sistema.",
+      "windows": "Abilita l'accesso al microfono in Impostazioni → Privacy e sicurezza → Microfono (incluso l'accesso delle app desktop).",
+      "macos": "Concedi l'accesso al microfono in Impostazioni di Sistema → Privacy e sicurezza → Microfono.",
+      "linux": "Concedi l'accesso al microfono nelle impostazioni audio o sulla privacy del tuo sistema."
+    },
+    "noInputDeviceTitle": "Nessun microfono trovato",
+    "noInputDevice": "Non è stato rilevato alcun dispositivo di ingresso audio. Collega un microfono o delle cuffie e riprova.",
+    "recordingFailed": "Impossibile avviare la registrazione: {{error}}",
+    "modelLoadFailed": "Impossibile caricare il modello: {{model}}",
+    "modelLoadFailedUnknown": "modello sconosciuto",
+    "pasteFailedTitle": "Impossibile incollare il testo",
+    "pasteFailed": "Non è stato possibile incollare il testo nell'applicazione attiva.",
+    "postProcessFallbackTitle": "Post-Processing Failed",
+    "postProcessFallbackDescription": "The original transcription was used."
+  },
+  "appLanguage": {
+    "title": "Lingua Applicazione",
+    "description": "Cambia la lingua dell'interfaccia di SpeakMore"
+  },
+  "overlay": {
+    "transcribing": "Trascrizione...",
+    "processing": "Elaborazione...",
+    "realtime": {
+      "connecting": "Connecting",
+      "listening": "Listening",
+      "transcribing": "Transcribing",
+      "finalizing": "Finalizing",
+      "error": "Error",
+      "waiting": "Waiting for speech..."
+    },
+    "recording": "Recording..."
+  },
+  "app": {
+    "name": "SpeakMore",
+    "taglineShort": "SpeakMore. Build Better. Grow Faster.",
+    "statusReady": "Ready"
+  },
+  "sidebarDescriptions": {
+    "general": "Recording, shortcuts, sound, and everyday controls.",
+    "models": "Local and cloud transcription engines.",
+    "advanced": "Output, startup, overlay, and experimental behavior.",
+    "history": "Review, copy, retry, and clean up past transcripts.",
+    "postprocessing": "Refine transcripts with reusable AI presets.",
+    "debug": "Logs and diagnostics for development builds.",
+    "about": "Version, storage paths, credits, and source links."
+  }
+}
