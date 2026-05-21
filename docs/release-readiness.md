@@ -29,7 +29,7 @@ This checklist tracks the work required after source publication and before Spea
 - Keep `nix-build` as a packaging/Nix signal until its runtime and path-filter behavior are stable enough for required-check use.
 - Keep source availability separate from binary release work: do not create tags, GitHub releases, or installers until the signed binary release gates below are complete.
 - Confirm SpeakMore-owned icon and tray image ownership before signed binary release. Current asset hashes and status are tracked in [asset-provenance.md](asset-provenance.md).
-- Keep Qwen3-ASR ModelScope ONNX catalog entries experimental until SHA-256 checksums and artifact provenance are pinned.
+- Keep Qwen3-ASR ModelScope ONNX catalog entries experimental until the ModelScope revision, converted artifact provenance, and licensing are pinned.
 
 ## P0 Before Signed Binary Release
 
@@ -50,7 +50,7 @@ This checklist tracks the work required after source publication and before Spea
   - `AZURE_CLIENT_SECRET`
   - `AZURE_TENANT_ID`
 - Add a SpeakMore-specific `bundle.windows.signCommand` to `src-tauri/tauri.conf.json`.
-- Pin SHA-256 checksums or remove release-quality claims for ModelScope-hosted Qwen3-ASR catalog artifacts.
+- Pin immutable ModelScope revisions and provenance, or remove release-quality claims for ModelScope-hosted Qwen3-ASR catalog artifacts.
 - Record project-owned app icon and tray image ownership confirmation or replace them with assets that have documented third-party licensing.
 - Run the release workflow and confirm the draft release contains binaries, `.sig` files, and `latest.json`.
 - Install and smoke test each uploaded package on its target OS before publishing the draft release.

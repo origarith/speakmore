@@ -199,16 +199,134 @@ function checkSecretPatterns(): boolean {
   return false;
 }
 
-function warnAboutCatalogChecksums(): void {
+type CatalogEntry = {
+  id?: string;
+  sha256?: string | null;
+  engine_type?: string;
+};
+
+type MultipartModelPart = {
+  path?: string;
+  url?: string;
+  sha256?: string;
+  size?: number;
+};
+
+type MultipartModelManifest = {
+  shared_parts?: MultipartModelPart[];
+  models?: Record<string, { parts?: MultipartModelPart[] }>;
+};
+
+function isSha256(value: unknown): value is string {
+  return typeof value === "string" && /^[a-f0-9]{64}$/i.test(value);
+}
+
+function validateMultipartPart(
+  part: MultipartModelPart,
+  label: string,
+): string[] {
+  const findings: string[] = [];
+
+  if (!part.path || part.path.trim().length === 0) {
+    findings.push(`${label}: missing path`);
+  }
+  if (!part.url || !/^https:\/\//.test(part.url)) {
+    findings.push(`${label}: missing https url`);
+  }
+  if (!isSha256(part.sha256)) {
+    findings.push(`${label}: missing valid sha256`);
+  }
+  if (!Number.isSafeInteger(part.size) || part.size <= 0) {
+    findings.push(`${label}: missing positive integer size`);
+  }
+
+  return findings;
+}
+
+function validateQwen3AsrManifest(catalog: CatalogEntry[]): {
+  coveredIds: Set<string>;
+  ok: boolean;
+} {
+  const manifestPath = join(
+    root,
+    "src-tauri/resources/models/qwen3-asr-onnx-parts.json",
+  );
+  const coveredIds = new Set<string>();
+  const qwenEntries = catalog.filter(
+    (entry) => entry.engine_type === "Qwen3Asr",
+  );
+
+  if (qwenEntries.length === 0) {
+    return { coveredIds, ok: true };
+  }
+
+  if (!existsSync(manifestPath)) {
+    console.error(
+      "[source-release-preflight] missing Qwen3-ASR multipart checksum manifest.",
+    );
+    return { coveredIds, ok: false };
+  }
+
+  const manifest = JSON.parse(
+    readFileSync(manifestPath, "utf8"),
+  ) as MultipartModelManifest;
+  const sharedParts = Array.isArray(manifest.shared_parts)
+    ? manifest.shared_parts
+    : [];
+  const findings: string[] = [];
+
+  for (const [index, part] of sharedParts.entries()) {
+    findings.push(
+      ...validateMultipartPart(part, `qwen3 shared_parts[${index}]`),
+    );
+  }
+
+  for (const entry of qwenEntries) {
+    const id = entry.id ?? "unknown";
+    const model = manifest.models?.[id];
+    const modelParts = Array.isArray(model?.parts) ? model.parts : [];
+
+    if (modelParts.length === 0) {
+      findings.push(`${id}: missing multipart model parts`);
+      continue;
+    }
+
+    for (const [index, part] of modelParts.entries()) {
+      findings.push(...validateMultipartPart(part, `${id}.parts[${index}]`));
+    }
+
+    coveredIds.add(id);
+  }
+
+  if (findings.length > 0) {
+    console.error(
+      "\n[source-release-preflight] Qwen3-ASR multipart checksum manifest is incomplete:",
+    );
+    console.error(findings.join("\n"));
+    return { coveredIds, ok: false };
+  }
+
+  console.log(
+    `Qwen3-ASR multipart checksums covered by manifest: ${[...coveredIds].join(", ")}`,
+  );
+  return { coveredIds, ok: true };
+}
+
+function checkCatalogChecksums(): boolean {
   const catalogPath = join(root, "src-tauri/resources/models/catalog.json");
-  if (!existsSync(catalogPath)) return;
+  if (!existsSync(catalogPath)) return true;
 
   const catalog = JSON.parse(readFileSync(catalogPath, "utf8")) as Array<{
     id?: string;
     sha256?: string | null;
+    engine_type?: string;
   }>;
+  const qwenManifest = validateQwen3AsrManifest(catalog);
   const missing = catalog
-    .filter((entry) => !entry.sha256)
+    .filter(
+      (entry) =>
+        !entry.sha256 && !qwenManifest.coveredIds.has(entry.id ?? "unknown"),
+    )
     .map((entry) => entry.id ?? "unknown");
 
   if (missing.length > 0) {
@@ -216,6 +334,8 @@ function warnAboutCatalogChecksums(): void {
       `\n[source-release-preflight] non-blocking: model catalog entries without sha256: ${missing.join(", ")}`,
     );
   }
+
+  return qwenManifest.ok;
 }
 
 const localChecks: Array<[string, string, string[], string?]> = [
@@ -232,7 +352,7 @@ ok = checkGitStatus() && ok;
 ok = checkTrackedReleaseNoise() && ok;
 ok = checkSensitiveFileNames() && ok;
 ok = checkSecretPatterns() && ok;
-warnAboutCatalogChecksums();
+ok = checkCatalogChecksums() && ok;
 
 for (const [name, command, args, cwd] of localChecks) {
   ok = runStep(name, command, args, cwd) && ok;

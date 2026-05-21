@@ -25,7 +25,7 @@ https://blob.handy.computer
 
 Catalog entries include filenames, download paths, sizes, engine type, and checksums where available.
 
-Qwen3-ASR catalog entries currently point to ModelScope-hosted converted ONNX artifacts and do not yet include pinned SHA-256 checksums. Treat those entries as experimental for release-quality packaging until checksums and artifact provenance are pinned.
+Qwen3-ASR catalog entries are directory models with multiple downloaded files. Their per-file URLs, sizes, and SHA-256 checksums are tracked in `src-tauri/resources/models/qwen3-asr-onnx-parts.json` and are checked by the source-release preflight. Treat those entries as experimental for release-quality packaging until the ModelScope revision, converted artifact provenance, and licensing are pinned.
 
 ## Known Upstream Projects
 
@@ -58,7 +58,7 @@ Before shipping public binary releases:
 
 1. Confirm every bundled model file has a redistributable license.
 2. Add required attribution text to [NOTICE.md](../NOTICE.md).
-3. Verify catalog checksums for downloadable artifacts.
+3. Verify catalog checksums or multipart manifests for downloadable artifacts.
 4. Avoid bundling large optional ASR models unless their licenses and sizes are intentional.
 5. Document cloud provider terms separately from local model licenses.
 6. Confirm model downloads do not require hidden credentials.

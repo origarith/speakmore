@@ -21,6 +21,7 @@ use tauri::{AppHandle, Emitter, Manager};
 const MODEL_DOWNLOAD_USER_AGENT: &str = concat!("SpeakMore/", env!("CARGO_PKG_VERSION"));
 const HANDY_MODEL_DOWNLOAD_BASE_URL: &str = "https://blob.handy.computer";
 const MODEL_CATALOG_JSON: &str = include_str!("../../resources/models/catalog.json");
+const QWEN3_ASR_PARTS_JSON: &str = include_str!("../../resources/models/qwen3-asr-onnx-parts.json");
 
 fn model_download_url(filename: &str) -> String {
     let base_url = std::env::var("SPEAKMORE_MODEL_DOWNLOAD_BASE_URL")
@@ -52,12 +53,23 @@ pub enum ModelSource {
     Custom,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone, Deserialize)]
 struct ModelDownloadPart {
-    path: &'static str,
-    url: &'static str,
-    sha256: &'static str,
+    path: String,
+    url: String,
+    sha256: String,
     size: u64,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct Qwen3AsrPartsManifest {
+    shared_parts: Vec<ModelDownloadPart>,
+    models: HashMap<String, Qwen3AsrModelParts>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct Qwen3AsrModelParts {
+    parts: Vec<ModelDownloadPart>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
@@ -686,101 +698,15 @@ impl ModelManager {
         Ok(format!("{:x}", hasher.finalize()))
     }
 
-    fn qwen3_asr_download_parts(model_id: &str) -> Option<Vec<ModelDownloadPart>> {
-        let tokenizer = [
-            ModelDownloadPart {
-                path: "tokenizer/merges.txt",
-                url: concat!(
-                    "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                    "/tokenizer/merges.txt"
-                ),
-                sha256: "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
-                size: 1_671_853,
-            },
-            ModelDownloadPart {
-                path: "tokenizer/tokenizer_config.json",
-                url: concat!(
-                    "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                    "/tokenizer/tokenizer_config.json"
-                ),
-                sha256: "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
-                size: 12_487,
-            },
-            ModelDownloadPart {
-                path: "tokenizer/vocab.json",
-                url: concat!(
-                    "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                    "/tokenizer/vocab.json"
-                ),
-                sha256: "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
-                size: 2_776_833,
-            },
-        ];
-
-        let mut parts = match model_id {
-            "qwen3-asr-0.6b-int8" => vec![
-                ModelDownloadPart {
-                    path: "conv_frontend.onnx",
-                    url: concat!(
-                        "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                        "/model_0.6B/conv_frontend.onnx"
-                    ),
-                    sha256: "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
-                    size: 44_148_281,
-                },
-                ModelDownloadPart {
-                    path: "encoder.int8.onnx",
-                    url: concat!(
-                        "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                        "/model_0.6B/encoder.int8.onnx"
-                    ),
-                    sha256: "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
-                    size: 182_491_662,
-                },
-                ModelDownloadPart {
-                    path: "decoder.int8.onnx",
-                    url: concat!(
-                        "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                        "/model_0.6B/decoder.int8.onnx"
-                    ),
-                    sha256: "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
-                    size: 755_914_231,
-                },
-            ],
-            "qwen3-asr-1.7b-int8" => vec![
-                ModelDownloadPart {
-                    path: "conv_frontend.onnx",
-                    url: concat!(
-                        "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                        "/model_1.7B/conv_frontend.onnx"
-                    ),
-                    sha256: "fa894a4ba53da6a4238f2a6ca0b09362e505d39cecbd646051b033e2e8d7e2fb",
-                    size: 48_080_441,
-                },
-                ModelDownloadPart {
-                    path: "encoder.int8.onnx",
-                    url: concat!(
-                        "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                        "/model_1.7B/encoder.int8.onnx"
-                    ),
-                    sha256: "436fbd910a0c8914851e5ac1354e807be9f283d08a5da728adaa609731c41469",
-                    size: 314_222_162,
-                },
-                ModelDownloadPart {
-                    path: "decoder.int8.onnx",
-                    url: concat!(
-                        "https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/resolve/master",
-                        "/model_1.7B/decoder.int8.onnx"
-                    ),
-                    sha256: "c43c853fa6e97d08365cb8a5502b360b595cd43c00dc60e4d8ca7cc18cad460b",
-                    size: 2_037_458_645,
-                },
-            ],
-            _ => return None,
+    fn qwen3_asr_download_parts(model_id: &str) -> Result<Option<Vec<ModelDownloadPart>>> {
+        let manifest: Qwen3AsrPartsManifest = serde_json::from_str(QWEN3_ASR_PARTS_JSON)?;
+        let Some(model_parts) = manifest.models.get(model_id) else {
+            return Ok(None);
         };
 
-        parts.extend(tokenizer);
-        Some(parts)
+        let mut parts = model_parts.parts.clone();
+        parts.extend(manifest.shared_parts);
+        Ok(Some(parts))
     }
 
     pub fn validate_qwen3_asr_model_dir(model_dir: &Path) -> Result<()> {
@@ -855,7 +781,7 @@ impl ModelManager {
         let throttle_duration = Duration::from_millis(100);
 
         for part in parts {
-            let target_path = partial_dir.join(part.path);
+            let target_path = partial_dir.join(&part.path);
             let part_partial_path = partial_dir.join(format!("{}.partial", part.path));
 
             if let Some(parent) = target_path.parent() {
@@ -866,7 +792,7 @@ impl ModelManager {
             }
 
             if target_path.exists() {
-                match Self::verify_sha256(&target_path, Some(part.sha256), model_id) {
+                match Self::verify_sha256(&target_path, Some(&part.sha256), model_id) {
                     Ok(()) => {
                         completed_size += target_path.metadata()?.len();
                         continue;
@@ -883,7 +809,7 @@ impl ModelManager {
                 0
             };
 
-            let mut request = client.get(part.url);
+            let mut request = client.get(&part.url);
             if resume_from > 0 {
                 request = request.header("Range", format!("bytes={}-", resume_from));
             }
@@ -897,7 +823,7 @@ impl ModelManager {
                 drop(response);
                 let _ = fs::remove_file(&part_partial_path);
                 resume_from = 0;
-                response = client.get(part.url).send().await?;
+                response = client.get(&part.url).send().await?;
             }
 
             if !response.status().is_success()
@@ -964,7 +890,7 @@ impl ModelManager {
             }
 
             let _ = self.app_handle.emit("model-verification-started", model_id);
-            Self::verify_sha256(&part_partial_path, Some(part.sha256), model_id)?;
+            Self::verify_sha256(&part_partial_path, Some(&part.sha256), model_id)?;
             let _ = self
                 .app_handle
                 .emit("model-verification-completed", model_id);
@@ -1019,7 +945,7 @@ impl ModelManager {
         let model_info =
             model_info.ok_or_else(|| anyhow::anyhow!("Model not found: {}", model_id))?;
 
-        if let Some(parts) = Self::qwen3_asr_download_parts(model_id) {
+        if let Some(parts) = Self::qwen3_asr_download_parts(model_id)? {
             return self
                 .download_model_parts(model_id, &model_info, parts)
                 .await;
@@ -1544,6 +1470,33 @@ mod tests {
         assert_eq!(qwen.source, ModelSource::SpeakMore);
         assert!(qwen.sha256.is_none());
         assert!(qwen.supported_languages.contains(&"zh-Hans".to_string()));
+    }
+
+    #[test]
+    fn test_qwen3_asr_manifest_covers_catalog_entries() {
+        let models = ModelManager::load_builtin_model_catalog().unwrap();
+        let qwen_ids: Vec<_> = models
+            .values()
+            .filter(|model| matches!(model.engine_type, EngineType::Qwen3Asr))
+            .map(|model| model.id.as_str())
+            .collect();
+
+        assert!(!qwen_ids.is_empty());
+
+        for model_id in qwen_ids {
+            let parts = ModelManager::qwen3_asr_download_parts(model_id)
+                .unwrap()
+                .unwrap_or_else(|| panic!("missing Qwen3-ASR manifest parts for {model_id}"));
+
+            assert_eq!(parts.len(), 6);
+            for part in parts {
+                assert!(!part.path.trim().is_empty());
+                assert!(part.url.starts_with("https://modelscope.cn/"));
+                assert_eq!(part.sha256.len(), 64);
+                assert!(part.sha256.chars().all(|c| c.is_ascii_hexdigit()));
+                assert!(part.size > 0);
+            }
+        }
     }
 
     #[test]
