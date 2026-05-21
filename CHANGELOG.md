@@ -2,9 +2,9 @@
 
 All notable public-facing changes will be documented here.
 
-This project is preparing its first public source release. Earlier entries may be incomplete while the repository is being cleaned up for open-source use.
+The public source repository is live. Earlier development entries may be incomplete; future public-facing changes should be recorded here.
 
-## 0.1.2 - Unreleased
+## 0.1.2 - Source Release Baseline
 
 - Renamed and prepared the project as SpeakMore.
 - Added a model catalog file for local ASR model metadata.

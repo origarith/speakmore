@@ -25,7 +25,7 @@ Security-sensitive areas include:
 
 ## Supported Versions
 
-SpeakMore is preparing for its first public source release. Until public releases exist, security fixes apply to the `main` branch.
+SpeakMore is currently published as source only. Until signed public releases exist, security fixes apply to the `main` branch.
 
 ## Handling Sensitive Data
 

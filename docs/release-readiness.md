@@ -25,8 +25,8 @@ This checklist tracks the work required after source publication and before Spea
 
 ## P0 Source Release Follow-Ups
 
-- Verify one completed public `nix build check` run on `main`.
-- After check names are stable, add required status checks to the `main` ruleset. Current observed check-run names are `code-quality`, `rust-tests`, `nix-build`, and `playwright`.
+- Keep source-health checks green on PRs. Current observed check-run names are `code-quality`, `rust-tests`, and `playwright`.
+- Keep `nix-build` as a packaging/Nix signal until its runtime and path-filter behavior are stable enough for required-check use.
 - Keep source availability separate from binary release work: do not create tags, GitHub releases, or installers until the signed binary release gates below are complete.
 - Confirm SpeakMore-owned icon and tray image ownership before signed binary release. Current asset hashes and status are tracked in [asset-provenance.md](asset-provenance.md).
 - Keep Qwen3-ASR ModelScope ONNX catalog entries experimental until SHA-256 checksums and artifact provenance are pinned.
@@ -64,7 +64,7 @@ This checklist tracks the work required after source publication and before Spea
 
 ## P1 Repository Governance
 
-- Configure branch protection or repository rulesets for `main`.
+- Add required status checks to the existing `main` ruleset after the check behavior is stable.
 - Require at least the CI checks that gate source health.
 - Require PR review once outside contributors are expected.
 - Keep blank issues disabled so reports use structured templates.

@@ -4,11 +4,11 @@ SpeakMore uses a small bundled VAD model and a model catalog for optional ASR do
 
 ## Bundled Model Files
 
-| File                                            | Purpose                    | Source note                                                                                       |
-| ----------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------- |
-| `src-tauri/resources/models/silero_vad_v4.onnx` | Voice Activity Detection   | Silero VAD project. The upstream Silero VAD repository is MIT licensed.                           |
-| `src-tauri/resources/models/gigaam_vocab.txt`   | GigaAM vocabulary metadata | Same tracked artifact as upstream Handy. Verify upstream attribution before distributing bundles. |
-| `src-tauri/resources/models/catalog.json`       | Model catalog metadata     | SpeakMore catalog file. It references remote model artifacts.                                     |
+| File                                            | Purpose                    | Source note                                                                                                          |
+| ----------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `src-tauri/resources/models/silero_vad_v4.onnx` | Voice Activity Detection   | Silero VAD project. The upstream Silero VAD repository is MIT licensed.                                              |
+| `src-tauri/resources/models/gigaam_vocab.txt`   | GigaAM vocabulary metadata | Same tracked artifact as upstream Handy. Upstream attribution still needs confirmation before signed binary release. |
+| `src-tauri/resources/models/catalog.json`       | Model catalog metadata     | SpeakMore catalog file. It references remote model artifacts.                                                        |
 
 ## Catalog Sources
 
