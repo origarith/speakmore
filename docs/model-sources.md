@@ -1,6 +1,6 @@
 # Model Sources
 
-SpeakMore uses a small bundled VAD model and a model catalog for optional ASR downloads. This document records where model artifacts come from and what must be checked before public release packaging.
+SpeakMore uses a small bundled VAD model and a model catalog for optional ASR downloads. This document records where model artifacts come from and what must be checked before signed binary release packaging.
 
 ## Bundled Model Files
 
@@ -62,6 +62,6 @@ Before shipping public binary releases:
 4. Avoid bundling large optional ASR models unless their licenses and sizes are intentional.
 5. Document cloud provider terms separately from local model licenses.
 6. Confirm model downloads do not require hidden credentials.
-7. Confirm project-owned icons, tray images, and sound assets are covered by repository licensing or by a documented third-party license.
+7. Confirm project-owned icons and tray images are covered by repository licensing or by a documented third-party license. Current asset status is tracked in [asset-provenance.md](asset-provenance.md).
 
 This document is not legal advice. Treat it as the engineering checklist for license and source review.
