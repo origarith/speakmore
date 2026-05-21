@@ -1,49 +1,92 @@
-# SpeakMore
+<p align="center">
+  <img src="docs/assets/speakmore-hero.png" alt="SpeakMore hero banner" width="100%" />
+</p>
 
-SpeakMore is a cross-platform desktop speech-to-text app built with Tauri, Rust, React, and TypeScript. It focuses on a small workflow: press a shortcut, speak, turn audio into text, optionally clean it up, and paste the result into the active app.
+<h1 align="center">SpeakMore</h1>
 
-SpeakMore is local-first. Local ASR keeps audio on your machine. Cloud ASR is available only when you configure a provider and explicitly choose that recognition path.
+<p align="center">
+  Cross-platform desktop speech-to-text for local-first dictation workflows.
+</p>
 
-## Features
+<p align="center">
+  <a href="BUILD.md">Build from source</a>
+  ·
+  <a href="docs/asr-providers.md">ASR providers</a>
+  ·
+  <a href="docs/post-processing.md">Post-processing</a>
+  ·
+  <a href="CONTRIBUTING.md">Contributing</a>
+</p>
 
-- Local speech recognition with a catalog of Whisper and other local model families
-- Optional cloud ASR providers for cases where remote recognition is preferred
-- Voice Activity Detection using Silero VAD
-- Configurable global shortcuts, including push-to-talk style workflows
-- Optional post-processing presets for cleaning or formatting transcripts
-- Local transcript history with retry, copy, and edit support
-- macOS, Windows, and Linux builds from source
+<p align="center">
+  <a href="https://github.com/OrigArith/SpeakMore/actions/workflows/code-quality.yml">
+    <img alt="Code quality" src="https://github.com/OrigArith/SpeakMore/actions/workflows/code-quality.yml/badge.svg" />
+  </a>
+  <a href="https://github.com/OrigArith/SpeakMore/actions/workflows/test.yml">
+    <img alt="Rust tests" src="https://github.com/OrigArith/SpeakMore/actions/workflows/test.yml/badge.svg" />
+  </a>
+  <a href="https://github.com/OrigArith/SpeakMore/actions/workflows/playwright.yml">
+    <img alt="Playwright" src="https://github.com/OrigArith/SpeakMore/actions/workflows/playwright.yml/badge.svg" />
+  </a>
+  <a href="LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-2D8B7F" />
+  </a>
+  <img alt="Status: source first" src="https://img.shields.io/badge/status-source--first-2D8B7F" />
+</p>
 
-## Project Status
+SpeakMore is a desktop app that turns spoken input into text and sends the result back to the app you are already using. Press a shortcut, speak, let SpeakMore transcribe the audio, optionally clean up the transcript, and paste or type the result into the active window.
 
-SpeakMore is available as a source-first public project. The repository supports source builds and development workflows. Public binary releases, package-manager distribution, updater metadata, and signed release artifacts are not available yet.
+> [!NOTE]
+> SpeakMore is currently a source-first public project. The repository supports source builds and development workflows. Signed installers, updater metadata, package-manager distribution, and public binary releases are not available yet.
 
-Current priorities:
+## Why SpeakMore
 
-- Make the source tree easy to build and audit
-- Stabilize Apple Silicon, Windows x64, and Linux source-build paths
-- Keep cloud ASR explicit, configurable, and clearly separated from local mode
-- Improve model source documentation and release packaging
-
-Release readiness is tracked in [docs/release-readiness.md](docs/release-readiness.md).
+- **Fast dictation loop:** start recording with a global shortcut, speak, and return text to the active app.
+- **Local-first recognition:** use local ASR when you want audio and transcripts to stay on your machine.
+- **Explicit cloud path:** configure cloud ASR only when you want a remote provider to handle recognition.
+- **Model flexibility:** manage local model families, languages, acceleration options, and provider-specific settings.
+- **Post-processing:** clean dictation, format text, or prepare concise messages after recognition.
+- **Private history:** keep local transcript history with retry, copy, edit, and clear privacy boundaries.
 
 ## Quick Start
 
-### Build From Source
-
-See [BUILD.md](BUILD.md) for platform-specific prerequisites.
+See [BUILD.md](BUILD.md) for platform prerequisites before running SpeakMore from source.
 
 ```bash
+git clone https://github.com/OrigArith/SpeakMore.git
+cd SpeakMore
 bun install
 bun run tauri dev
 ```
 
-The required VAD model and model catalog are tracked in this repository. Optional ASR models are downloaded through the app or installed manually.
+The required VAD model and model catalog are tracked in this repository. Optional ASR models can be downloaded through the app or installed manually.
 
 On macOS, if CMake rejects an older dependency policy during setup, run:
 
 ```bash
 CMAKE_POLICY_VERSION_MINIMUM=3.5 bun run tauri dev
+```
+
+### Agent-Assisted Setup
+
+If you use a local coding agent, you can ask it to prepare and run SpeakMore from source.
+
+Copy this prompt:
+
+```text
+Help me build and run SpeakMore from source on this machine.
+
+Repository:
+https://github.com/OrigArith/SpeakMore
+
+Please:
+1. Read README.md and BUILD.md first.
+2. Detect my OS and install or list the required platform prerequisites.
+3. Install project dependencies with bun install.
+4. Start the development build with bun run tauri dev.
+5. If the build fails, inspect the error, explain the cause, and apply only minimal fixes needed for local development.
+6. Do not create releases, tags, signed installers, or publish anything.
+7. Keep local credentials, API keys, clipboard contents, and transcript data private.
 ```
 
 ### Development Checks
@@ -70,41 +113,67 @@ Recognition can use:
 
 Post-processing is separate from recognition. You can use the raw transcript directly, or run it through a preset that cleans dictation, formats text, or prepares a concise message.
 
+```text
+audio input -> VAD -> ASR provider -> transcript -> optional post-processing -> paste/copy/history
+```
+
 ## Privacy Model
 
 SpeakMore has two different privacy modes:
 
-- Local ASR: audio and transcripts stay on your machine unless you export or share them.
-- Cloud ASR: audio is sent to the provider you configure. Provider credentials and network access are required.
+- **Local ASR:** audio and transcripts stay on your machine unless you export or share them.
+- **Cloud ASR:** audio is sent to the provider you configure. Provider credentials and network access are required.
 
 SpeakMore should not write provider API keys, previous clipboard contents, or cloud provider secrets into transcript history or exported data. See [docs/history.md](docs/history.md) for the local history privacy boundary.
 
+## Supported Platforms
+
+| Platform | Current source-build target                     |
+| -------- | ----------------------------------------------- |
+| macOS    | Apple Silicon primary; Intel best effort        |
+| Windows  | Windows x64 primary; Windows ARM64 experimental |
+| Linux    | x64 and arm64 source builds                     |
+
+On Linux, X11 users should install `xdotool` for reliable text insertion. Wayland users should install `wtype` or configure desktop-level shortcuts that call the CLI flags. The recording overlay is disabled by default on Linux because some compositors may give it focus and interfere with paste behavior.
+
+If startup fails with `libgtk-layer-shell.so.0`, install the runtime package:
+
+| Distro        | Package               |
+| ------------- | --------------------- |
+| Ubuntu/Debian | `libgtk-layer-shell0` |
+| Fedora/RHEL   | `gtk-layer-shell`     |
+| Arch Linux    | `gtk-layer-shell`     |
+
+Useful Linux workarounds:
+
+```bash
+SPEAKMORE_NO_GTK_LAYER_SHELL=1 speakmore
+WEBKIT_DISABLE_DMABUF_RENDERER=1 speakmore
+```
+
 ## Documentation
 
-- [BUILD.md](BUILD.md): source build instructions
-- [CONTRIBUTING.md](CONTRIBUTING.md): contribution workflow
-- [CONTRIBUTING_TRANSLATIONS.md](CONTRIBUTING_TRANSLATIONS.md): translation guide
-- [docs/asr-providers.md](docs/asr-providers.md): local and cloud ASR provider model
-- [docs/post-processing.md](docs/post-processing.md): post-processing preset behavior
-- [docs/history.md](docs/history.md): history storage and privacy boundary
-- [docs/model-sources.md](docs/model-sources.md): model and third-party source notes
-- [docs/release-readiness.md](docs/release-readiness.md): signed binary release checklist
+| Document                                                     | Use it for                                     |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| [BUILD.md](BUILD.md)                                         | Platform prerequisites and source builds       |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                           | Pull request and contribution workflow         |
+| [CONTRIBUTING_TRANSLATIONS.md](CONTRIBUTING_TRANSLATIONS.md) | Adding or updating translations                |
+| [docs/asr-providers.md](docs/asr-providers.md)               | Local and cloud ASR provider boundaries        |
+| [docs/post-processing.md](docs/post-processing.md)           | Transcript cleanup and formatting presets      |
+| [docs/history.md](docs/history.md)                           | Local history storage and privacy boundary     |
+| [docs/model-sources.md](docs/model-sources.md)               | Model and third-party source notes             |
+| [docs/release-readiness.md](docs/release-readiness.md)       | Signed binary release checklist                |
+| [docs/asset-provenance.md](docs/asset-provenance.md)         | Non-code asset provenance and ownership status |
 
 ## Architecture
 
 SpeakMore combines a Rust backend with a React settings UI:
 
-- `src-tauri/src/`: Tauri app, audio, shortcuts, history, settings, transcription, model management
-- `src-tauri/src/audio_toolkit/`: device I/O, recording, resampling, VAD helpers
+- `src-tauri/src/`: Tauri app, audio, shortcuts, history, settings, transcription, and model management
+- `src-tauri/src/audio_toolkit/`: device I/O, recording, resampling, and VAD helpers
 - `src-tauri/src/commands/`: Tauri command handlers
 - `src/`: React UI, settings screens, onboarding, overlay, stores, and generated Tauri bindings
 - `src/i18n/`: i18next setup and locale files
-
-The core flow is:
-
-```text
-audio input -> VAD -> ASR provider -> transcript -> optional post-processing -> paste/copy/history
-```
 
 ## CLI
 
@@ -125,41 +194,6 @@ On macOS app bundles, invoke the binary directly:
 /Applications/SpeakMore.app/Contents/MacOS/SpeakMore --toggle-transcription
 ```
 
-## Platform Notes
-
-### macOS
-
-- Apple Silicon is the primary macOS target.
-- Accessibility permissions are required for global shortcuts and text insertion.
-- Intel macOS source builds are best effort.
-
-### Windows
-
-- Windows x64 is the primary Windows target.
-- Windows ARM64 is experimental until runner and device coverage are reliable.
-
-### Linux
-
-- Linux x64 and arm64 source builds are supported targets.
-- On X11, install `xdotool` for reliable text insertion.
-- On Wayland, install `wtype` or configure desktop-level shortcuts that call the CLI flags.
-- The recording overlay is disabled by default on Linux because some compositors may give it focus and interfere with paste behavior.
-
-If startup fails with `libgtk-layer-shell.so.0`, install the runtime package:
-
-| Distro        | Package               |
-| ------------- | --------------------- |
-| Ubuntu/Debian | `libgtk-layer-shell0` |
-| Fedora/RHEL   | `gtk-layer-shell`     |
-| Arch Linux    | `gtk-layer-shell`     |
-
-Useful Linux workarounds:
-
-```bash
-SPEAKMORE_NO_GTK_LAYER_SHELL=1 speakmore
-WEBKIT_DISABLE_DMABUF_RENDERER=1 speakmore
-```
-
 ## Manual Model Installation
 
 If automatic model downloads are blocked by a proxy or firewall, place model files in the app data `models` directory and restart SpeakMore.
@@ -172,9 +206,11 @@ Typical app data locations:
 
 For model source details, filenames, and attribution notes, see [docs/model-sources.md](docs/model-sources.md).
 
-## Release Signatures
+## Release and Distribution
 
-Tauri updater artifacts are currently disabled. SpeakMore does not yet publish updater signatures or a `latest.json` endpoint.
+Public binary releases, signed installers, package-manager distribution, updater signatures, and a `latest.json` updater endpoint are not available yet. Local bundles built from source are useful for development and testing, but they are not official project releases.
+
+Release readiness is tracked in [docs/release-readiness.md](docs/release-readiness.md).
 
 ## Contributing
 
