@@ -1,14 +1,14 @@
 # Model Sources
 
-SpeakMore uses a small bundled VAD model and a model catalog for optional ASR downloads. This document records where model artifacts come from and what must be checked before public release packaging.
+SpeakMore uses a small bundled VAD model and a model catalog for optional ASR downloads. This document records where model artifacts come from and what must be checked before signed binary release packaging.
 
 ## Bundled Model Files
 
-| File                                            | Purpose                    | Source note                                                                                       |
-| ----------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------- |
-| `src-tauri/resources/models/silero_vad_v4.onnx` | Voice Activity Detection   | Silero VAD project. The upstream Silero VAD repository is MIT licensed.                           |
-| `src-tauri/resources/models/gigaam_vocab.txt`   | GigaAM vocabulary metadata | Same tracked artifact as upstream Handy. Verify upstream attribution before distributing bundles. |
-| `src-tauri/resources/models/catalog.json`       | Model catalog metadata     | SpeakMore catalog file. It references remote model artifacts.                                     |
+| File                                            | Purpose                    | Source note                                                                                                          |
+| ----------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `src-tauri/resources/models/silero_vad_v4.onnx` | Voice Activity Detection   | Silero VAD project. The upstream Silero VAD repository is MIT licensed.                                              |
+| `src-tauri/resources/models/gigaam_vocab.txt`   | GigaAM vocabulary metadata | Same tracked artifact as upstream Handy. Upstream attribution still needs confirmation before signed binary release. |
+| `src-tauri/resources/models/catalog.json`       | Model catalog metadata     | SpeakMore catalog file. It references remote model artifacts.                                                        |
 
 ## Catalog Sources
 
@@ -25,7 +25,7 @@ https://blob.handy.computer
 
 Catalog entries include filenames, download paths, sizes, engine type, and checksums where available.
 
-Qwen3-ASR catalog entries currently point to ModelScope-hosted converted ONNX artifacts and do not yet include pinned SHA-256 checksums. Treat those entries as experimental for release-quality packaging until checksums and artifact provenance are pinned.
+Qwen3-ASR catalog entries are directory models with multiple downloaded files. Their per-file URLs, sizes, and SHA-256 checksums are tracked in `src-tauri/resources/models/qwen3-asr-onnx-parts.json` and are checked by the source-release preflight. Treat those entries as experimental for release-quality packaging until the ModelScope revision, converted artifact provenance, and licensing are pinned.
 
 ## Known Upstream Projects
 
@@ -58,10 +58,10 @@ Before shipping public binary releases:
 
 1. Confirm every bundled model file has a redistributable license.
 2. Add required attribution text to [NOTICE.md](../NOTICE.md).
-3. Verify catalog checksums for downloadable artifacts.
+3. Verify catalog checksums or multipart manifests for downloadable artifacts.
 4. Avoid bundling large optional ASR models unless their licenses and sizes are intentional.
 5. Document cloud provider terms separately from local model licenses.
 6. Confirm model downloads do not require hidden credentials.
-7. Confirm project-owned icons, tray images, and sound assets are covered by repository licensing or by a documented third-party license.
+7. Confirm project-owned icons and tray images are covered by repository licensing or by a documented third-party license. Current asset status is tracked in [asset-provenance.md](asset-provenance.md).
 
 This document is not legal advice. Treat it as the engineering checklist for license and source review.

@@ -43,12 +43,12 @@ If release or packaging is affected:
 - Which platforms were tested:
 - Does `docs/release-readiness.md` need an update:
 
-## AI Assistance
+## Automation or Tooling Assistance
 
-- [ ] No AI assistance was used.
-- [ ] AI assistance was used.
+- [ ] No automation or external tooling assistance was used.
+- [ ] Automation or external tooling assistance was used.
 
-If AI assistance was used:
+If automation or external tooling assistance was used:
 
 - Tools used:
 - Scope of assistance:

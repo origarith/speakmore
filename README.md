@@ -6,7 +6,7 @@ SpeakMore is local-first. Local ASR keeps audio on your machine. Cloud ASR is av
 
 ## Features
 
-- Local speech recognition with Whisper and other bundled model families
+- Local speech recognition with a catalog of Whisper and other local model families
 - Optional cloud ASR providers for cases where remote recognition is preferred
 - Voice Activity Detection using Silero VAD
 - Configurable global shortcuts, including push-to-talk style workflows
@@ -16,7 +16,7 @@ SpeakMore is local-first. Local ASR keeps audio on your machine. Cloud ASR is av
 
 ## Project Status
 
-SpeakMore is preparing for its first public source release. The repository currently supports source builds and development workflows. Public binary releases, package-manager distribution, updater metadata, and signed release artifacts are not available yet.
+SpeakMore is available as a source-first public project. The repository supports source builds and development workflows. Public binary releases, package-manager distribution, updater metadata, and signed release artifacts are not available yet.
 
 Current priorities:
 
@@ -35,10 +35,10 @@ See [BUILD.md](BUILD.md) for platform-specific prerequisites.
 
 ```bash
 bun install
-mkdir -p src-tauri/resources/models
-curl -o src-tauri/resources/models/silero_vad_v4.onnx https://blob.handy.computer/silero_vad_v4.onnx
 bun run tauri dev
 ```
+
+The required VAD model and model catalog are tracked in this repository. Optional ASR models are downloaded through the app or installed manually.
 
 On macOS, if CMake rejects an older dependency policy during setup, run:
 
@@ -88,7 +88,7 @@ SpeakMore should not write provider API keys, previous clipboard contents, or cl
 - [docs/post-processing.md](docs/post-processing.md): post-processing preset behavior
 - [docs/history.md](docs/history.md): history storage and privacy boundary
 - [docs/model-sources.md](docs/model-sources.md): model and third-party source notes
-- [docs/release-readiness.md](docs/release-readiness.md): public release and signed binary checklist
+- [docs/release-readiness.md](docs/release-readiness.md): signed binary release checklist
 
 ## Architecture
 
@@ -178,7 +178,7 @@ Tauri updater artifacts are currently disabled. SpeakMore does not yet publish u
 
 ## Contributing
 
-Issues and pull requests are welcome while the project is being prepared for public release. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
+Issues and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
 
 For security issues, do not open a public issue. See [SECURITY.md](SECURITY.md).
 

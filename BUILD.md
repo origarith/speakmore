@@ -66,18 +66,13 @@ cd SpeakMore
 bun install
 ```
 
-### 3. Download Required VAD Model
-
-```bash
-mkdir -p src-tauri/resources/models
-curl -o src-tauri/resources/models/silero_vad_v4.onnx https://blob.handy.computer/silero_vad_v4.onnx
-```
-
-### 4. Start Dev Server
+### 3. Start Dev Server
 
 ```bash
 bun run tauri dev
 ```
+
+The required VAD model and model catalog are tracked in `src-tauri/resources/models/`. Optional ASR models are downloaded through the app or installed manually.
 
 If macOS dependency setup fails with a CMake policy error:
 
@@ -85,19 +80,19 @@ If macOS dependency setup fails with a CMake policy error:
 CMAKE_POLICY_VERSION_MINIMUM=3.5 bun run tauri dev
 ```
 
-### 5. Build for Production
+### 4. Build for Production
 
 ```bash
 bun run tauri build
 ```
 
-This compiles a release binary and generates platform-specific bundles (deb, rpm, AppImage on Linux; dmg on macOS with Apple Silicon prioritized; msi on Windows x64, with Windows ARM64 treated as experimental).
+This compiles a local release binary and generates platform-specific bundles (deb, rpm, AppImage on Linux; dmg on macOS with Apple Silicon prioritized; msi on Windows x64, with Windows ARM64 treated as experimental). These local bundles are unsigned and are not official project releases.
 
 ## Linux Install (from source)
 
 The raw binary (`src-tauri/target/release/speakmore`) cannot run standalone — it needs Tauri resource files (tray icons, sounds, VAD model) to be co-located at the expected path.
 
-**Install from the deb bundle** (works on any Linux distro):
+**Extract from the deb bundle** (useful for Debian-compatible systems or manual testing on other distributions):
 
 ```bash
 cd /tmp

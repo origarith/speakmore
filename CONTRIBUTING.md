@@ -1,6 +1,6 @@
 # Contributing to SpeakMore
 
-Thanks for helping improve SpeakMore. This project is preparing for its first public source release, so contributions that improve build reliability, documentation, packaging, privacy boundaries, and core speech-to-text stability are especially useful.
+Thanks for helping improve SpeakMore. This is a source-first public project, so contributions that improve build reliability, documentation, packaging, privacy boundaries, and core speech-to-text stability are especially useful.
 
 ## Before You Start
 
@@ -21,10 +21,10 @@ Then:
 
 ```bash
 bun install
-mkdir -p src-tauri/resources/models
-curl -o src-tauri/resources/models/silero_vad_v4.onnx https://blob.handy.computer/silero_vad_v4.onnx
 bun run tauri dev
 ```
+
+The required VAD model and model catalog are tracked in `src-tauri/resources/models/`. Optional ASR models are downloaded through the app or installed manually.
 
 ## Project Structure
 
@@ -96,11 +96,11 @@ Documentation:
 
 See [CONTRIBUTING_TRANSLATIONS.md](CONTRIBUTING_TRANSLATIONS.md). When adding a user-facing string, update the English source file and keep locale keys complete.
 
-## AI Assistance
+## Automation and Tooling Disclosure
 
-AI-assisted contributions are allowed. Disclose the tools used and the scope of assistance in the PR template so reviewers know what to inspect more closely.
+Tool-assisted contributions are allowed. Disclose the tools used and the scope of assistance in the PR template so reviewers know what to inspect more closely.
 
-Do not paste private transcripts, provider credentials, generated logs with secrets, or local-only paths into prompts or public PR text.
+Do not paste private transcripts, provider credentials, generated logs with secrets, or local-only paths into external tools or public PR text.
 
 ## Pull Request Guidelines
 
@@ -111,7 +111,7 @@ A good PR includes:
 - The commands you ran
 - Manual test notes for platform-specific behavior
 - Screenshots or short videos for visible UI changes
-- A clear note if AI assistance was used
+- A clear note if automation or external tooling was used
 
 Use conventional commit prefixes when practical:
 
