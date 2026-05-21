@@ -6,6 +6,7 @@ This document records the current provenance status for non-code assets that are
 
 - Audio feedback sounds match the MIT-licensed upstream Handy repository.
 - SpeakMore icon and tray images do not match upstream Handy assets and are treated as SpeakMore-owned project assets.
+- README hero banner is a SpeakMore-specific project asset.
 - No splash image is currently tracked in this repository.
 - Signed binary releases should not ship until the project-owned app icon and tray image source files are retained or maintainer ownership is explicitly confirmed.
 
@@ -29,6 +30,14 @@ These files match the upstream Handy files byte-for-byte at the commit above.
 | `src-tauri/resources/marimba_stop.wav`  | `682f408a066eadcccd5bc09e4055629bdd985f7ef222954a34f7e05ca1a456b2` | Matches Handy MIT upstream |
 | `src-tauri/resources/pop_start.wav`     | `18dcc6fdeab5889f2e216da45d29c2df0a94f006fff6cfaee352f0df52a4779b` | Matches Handy MIT upstream |
 | `src-tauri/resources/pop_stop.wav`      | `3c6dd27332c8613f533824979c470d32a62c326cdac35f1edea668602430d90d` | Matches Handy MIT upstream |
+
+## README Hero Banner
+
+This file is SpeakMore-specific and is used as the README header image.
+
+| File                             | SHA-256                                                            | Status                            |
+| -------------------------------- | ------------------------------------------------------------------ | --------------------------------- |
+| `docs/assets/speakmore-hero.png` | `050723ddc45d9fa7d00c911be1ddabd9be7ac7a517c354aafc055adca14ca166` | Project-owned README visual asset |
 
 ## Tray Images
 
