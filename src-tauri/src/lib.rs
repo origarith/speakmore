@@ -8,6 +8,7 @@ pub mod cli;
 mod clipboard;
 mod commands;
 pub mod context_awareness;
+mod data_cli;
 mod helpers;
 mod input;
 mod llm_client;
@@ -319,6 +320,10 @@ fn show_main_window_command(app: AppHandle) -> Result<(), String> {
 pub fn run(cli_args: CliArgs) {
     // Detect portable mode before anything else
     portable::init();
+
+    if let Some(command) = cli_args.command.as_ref() {
+        data_cli::run(command);
+    }
 
     // Parse console logging directives from RUST_LOG, falling back to info-level logging
     // when the variable is unset
