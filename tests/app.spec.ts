@@ -1,8 +1,12 @@
 import { test, expect } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
-const installTauriMocks = async (page: Page) => {
-  await page.addInitScript(() => {
+const installTauriMocks = async (
+  page: Page,
+  options: { osType?: "macos" | "windows" | "linux" } = {},
+) => {
+  const osType = options.osType ?? "macos";
+  await page.addInitScript((mockedOsType) => {
     const createModel = (id: string, downloaded: boolean) => ({
       id,
       name: id
@@ -95,6 +99,7 @@ const installTauriMocks = async (page: Page) => {
       append_trailing_space: true,
       app_language: "en",
       experimental_enabled: true,
+      context_awareness_enabled: false,
       keyboard_implementation: "tauri",
       show_tray_icon: true,
       paste_delay_ms: 100,
@@ -118,6 +123,7 @@ const installTauriMocks = async (page: Page) => {
     let contextProbeRuns = [
       {
         id: 1,
+        history_entry_id: null,
         captured_at: 1730000000,
         source: "settings_debug",
         status: "success",
@@ -145,10 +151,10 @@ const installTauriMocks = async (page: Page) => {
 
     let callbackId = 1;
     (window as any).__TAURI_OS_PLUGIN_INTERNALS__ = {
-      platform: "macos",
-      os_type: "macos",
-      arch: "aarch64",
-      family: "unix",
+      platform: mockedOsType,
+      os_type: mockedOsType,
+      arch: mockedOsType === "macos" ? "aarch64" : "x86_64",
+      family: mockedOsType === "windows" ? "windows" : "unix",
       version: "14",
       eol: "\n",
       exe_extension: "",
@@ -184,6 +190,7 @@ const installTauriMocks = async (page: Page) => {
             return { start: false, stop: false };
           case "initialize_enigo":
           case "initialize_shortcuts":
+          case "change_context_awareness_enabled_setting":
             return null;
           case "get_context_probe_runs":
             return contextProbeRuns;
@@ -217,7 +224,7 @@ const installTauriMocks = async (page: Page) => {
         }
       },
     };
-  });
+  }, osType);
 };
 
 test.describe("SpeakMore App", () => {
@@ -294,6 +301,10 @@ test.describe("SpeakMore App", () => {
     await page.getByRole("button", { name: /Advanced/i }).click();
 
     await expect(
+      page.getByText("Focused Context for Post-processing"),
+    ).toBeVisible();
+    await expect(page.getByText("macOS only")).toBeVisible();
+    await expect(
       page.getByRole("button", { name: /Capture Focused Context/i }),
     ).toBeVisible();
     await expect(page.getByText("TextEdit", { exact: true })).toBeVisible();
@@ -307,5 +318,24 @@ test.describe("SpeakMore App", () => {
     await expect(
       page.getByText("No context probes captured yet."),
     ).toBeVisible();
+  });
+
+  test("shows focused context as unavailable on non-macOS", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 680, height: 570 });
+    await installTauriMocks(page, { osType: "windows" });
+    await page.goto("/");
+
+    await page.getByRole("button", { name: /Advanced/i }).click();
+
+    await expect(
+      page.getByText(
+        "Focused context capture is experimental and currently unavailable on this operating system.",
+      ),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /Capture Focused Context/i }),
+    ).toHaveCount(0);
   });
 });

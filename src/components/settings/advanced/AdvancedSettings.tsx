@@ -20,6 +20,7 @@ import { AccelerationSelector } from "../AccelerationSelector";
 import { LazyStreamClose } from "../LazyStreamClose";
 import { ContextAwarenessProbe } from "../debug/ContextAwarenessProbe";
 import { useOsType } from "../../../hooks/useOsType";
+import { ContextAwarenessToggle } from "../ContextAwarenessToggle";
 
 export const AdvancedSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -65,6 +66,7 @@ export const AdvancedSettings: React.FC = () => {
           />
           <AccelerationSelector descriptionMode="tooltip" grouped={true} />
           <LazyStreamClose descriptionMode="tooltip" grouped={true} />
+          <ContextAwarenessToggle descriptionMode="tooltip" grouped={true} />
           {osType === "macos" && (
             <ContextAwarenessProbe descriptionMode="tooltip" grouped={true} />
           )}

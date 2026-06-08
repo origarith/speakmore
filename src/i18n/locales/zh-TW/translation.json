@@ -531,6 +531,13 @@
         "add": "新增",
         "remove": "刪除 {{word}}",
         "duplicate": "「{{word}}」已存在"
+      },
+      "contextAwareness": {
+        "label": "Focused Context for Post-processing",
+        "description": "Capture the focused macOS text field before post-processing recordings so the rewrite can use cursor and selection context.",
+        "macOnly": "macOS only",
+        "privacyWarning": "When enabled, focused input context is saved in local history with the recording. Avoid using it in private or sensitive fields.",
+        "unavailable": "Focused context capture is experimental and currently unavailable on this operating system."
       }
     },
     "postProcessing": {
@@ -737,7 +744,18 @@
       "cancelEdit": "取消",
       "restoreGenerated": "還原生成文字",
       "editError": "儲存修正失敗，請重試。",
-      "clearEditError": "還原生成文字失敗，請重試。"
+      "clearEditError": "還原生成文字失敗，請重試。",
+      "focusedContext": {
+        "title": "Focused Context",
+        "bundle": "Bundle",
+        "selection": "Selection",
+        "truncated": "Truncated",
+        "before": "Before cursor",
+        "selected": "Selected text",
+        "after": "After cursor",
+        "emptyText": "Empty"
+      },
+      "charCount": "{{count}} chars"
     },
     "debug": {
       "title": "偵錯",

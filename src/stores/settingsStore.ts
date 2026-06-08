@@ -151,6 +151,14 @@ const settingUpdaters: {
   app_language: (value) => commands.changeAppLanguageSetting(value as string),
   experimental_enabled: (value) =>
     commands.changeExperimentalEnabledSetting(value as boolean),
+  context_awareness_enabled: async (value) => {
+    const result = await commands.changeContextAwarenessEnabledSetting(
+      value as boolean,
+    );
+    if (result.status === "error") {
+      throw new Error(String(result.error));
+    }
+  },
   lazy_stream_close: (value) =>
     commands.changeLazyStreamCloseSetting(value as boolean),
   show_tray_icon: (value) =>

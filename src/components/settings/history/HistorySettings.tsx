@@ -778,6 +778,7 @@ const HistoryDetailPanel: React.FC<HistoryDetailPanelProps> = ({
       <p className="mb-2 font-medium text-text/80">
         {t("settings.history.details")}
       </p>
+      <HistoryFocusedContextSection detail={detail} formatValue={formatValue} />
       <HistoryDetailSection title={t("settings.history.transcriptionRuns")}>
         {detail.transcription_runs.length === 0 ? (
           <HistoryDetailEmpty />
@@ -842,6 +843,103 @@ const HistoryDetailPanel: React.FC<HistoryDetailPanelProps> = ({
         )}
       </HistoryDetailSection>
     </div>
+  );
+};
+
+const textCharCount = (value?: string | null) =>
+  value ? Array.from(value).length : 0;
+
+const HistoryFocusedContextSection: React.FC<{
+  detail: HistoryEntryDetail;
+  formatValue: (value?: string | number | null) => string;
+}> = ({ detail, formatValue }) => {
+  const { t } = useTranslation();
+  const context = detail.focused_context;
+
+  return (
+    <HistoryDetailSection title={t("settings.history.focusedContext.title")}>
+      {!context ? (
+        <HistoryDetailEmpty />
+      ) : (
+        <div className="rounded-md border border-mid-gray/10 bg-white/30 px-2 py-1.5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="font-medium text-text/75">
+              {formatValue(context.app_name)} / {formatValue(context.window_title)}
+            </span>
+            <span className="rounded bg-background/70 px-1.5 py-0.5 text-[10px] uppercase text-text/50">
+              {context.status.replace(/_/g, " ")}
+            </span>
+          </div>
+          <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-text/55">
+            <span>
+              {t("settings.history.focusedContext.bundle")}:{" "}
+              {formatValue(context.bundle_id)}
+            </span>
+            <span>
+              {t("settings.history.focusedContext.selection")}:{" "}
+              {context.selected_location_utf16 === null ||
+              context.selected_length_utf16 === null
+                ? formatValue(null)
+                : `${context.selected_location_utf16}:${context.selected_length_utf16}`}
+            </span>
+            <span>
+              {t("settings.history.focusedContext.truncated")}:{" "}
+              {context.truncated
+                ? t("common.yes")
+                : t("common.no")}
+            </span>
+            {context.failure_reason && (
+              <span>
+                {t("settings.history.error")}: {context.failure_reason}
+              </span>
+            )}
+          </div>
+          {context.status === "success" && !context.is_secure && (
+            <div className="mt-2 space-y-1.5">
+              <HistoryContextTextBlock
+                title={t("settings.history.focusedContext.before")}
+                text={context.before_text}
+              />
+              <HistoryContextTextBlock
+                title={t("settings.history.focusedContext.selected")}
+                text={context.selected_text}
+              />
+              <HistoryContextTextBlock
+                title={t("settings.history.focusedContext.after")}
+                text={context.after_text}
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </HistoryDetailSection>
+  );
+};
+
+const HistoryContextTextBlock: React.FC<{
+  title: string;
+  text?: string | null;
+}> = ({ title, text }) => {
+  const { t } = useTranslation();
+  const count = textCharCount(text);
+
+  if (!text) {
+    return (
+      <div className="rounded border border-mid-gray/10 bg-background/40 px-2 py-1 text-[11px] text-text/40">
+        {title}: {t("settings.history.focusedContext.emptyText")}
+      </div>
+    );
+  }
+
+  return (
+    <details className="rounded border border-mid-gray/10 bg-background/40 px-2 py-1">
+      <summary className="cursor-pointer select-none text-[11px] font-medium text-text/65">
+        {title} ({t("settings.history.charCount", { count })})
+      </summary>
+      <pre className="mt-1 max-h-48 overflow-auto whitespace-pre-wrap break-words rounded bg-white/35 p-2 font-mono text-[11px] leading-relaxed text-text/70">
+        {text}
+      </pre>
+    </details>
   );
 };
 
