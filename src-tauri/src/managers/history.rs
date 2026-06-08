@@ -153,6 +153,11 @@ static MIGRATIONS: &[M] = &[
         CREATE INDEX IF NOT EXISTS idx_context_probe_runs_captured
             ON context_probe_runs(captured_at DESC, id DESC);",
     ),
+    M::up(
+        "ALTER TABLE context_probe_runs ADD COLUMN history_entry_id INTEGER;
+         CREATE INDEX IF NOT EXISTS idx_context_probe_runs_history_entry
+            ON context_probe_runs(history_entry_id, captured_at DESC, id DESC);",
+    ),
 ];
 
 #[derive(Clone, Debug, Serialize, Deserialize, Type)]
@@ -288,6 +293,7 @@ pub struct HistoryEntryDetail {
     pub transcription_runs: Vec<TranscriptionRun>,
     pub post_process_runs: Vec<PostProcessRun>,
     pub events: Vec<HistoryEvent>,
+    pub focused_context: Option<ContextProbeRun>,
 }
 
 pub struct HistoryManager {
@@ -520,7 +526,7 @@ impl HistoryManager {
     }
 
     fn context_probe_select_columns() -> &'static str {
-        "id, captured_at, source, status, confidence, latency_ms, app_name, bundle_id, pid, window_title, element_role, element_subrole, is_secure, value_text, before_text, selected_text, after_text, selected_location_utf16, selected_length_utf16, number_of_characters, available_attributes_json, failure_reason, truncated"
+        "id, history_entry_id, captured_at, source, status, confidence, latency_ms, app_name, bundle_id, pid, window_title, element_role, element_subrole, is_secure, value_text, before_text, selected_text, after_text, selected_location_utf16, selected_length_utf16, number_of_characters, available_attributes_json, failure_reason, truncated"
     }
 
     fn map_context_probe_run(row: &rusqlite::Row<'_>) -> rusqlite::Result<ContextProbeRun> {
@@ -529,6 +535,7 @@ impl HistoryManager {
 
         Ok(ContextProbeRun {
             id: row.get("id")?,
+            history_entry_id: row.get("history_entry_id")?,
             captured_at: row.get("captured_at")?,
             source: row.get("source")?,
             status: ContextProbeStatus::from_db(&status),
@@ -940,6 +947,7 @@ impl HistoryManager {
     ) -> Result<ContextProbeRun> {
         conn.execute(
             "INSERT INTO context_probe_runs (
+                history_entry_id,
                 captured_at,
                 source,
                 status,
@@ -962,8 +970,9 @@ impl HistoryManager {
                 available_attributes_json,
                 failure_reason,
                 truncated
-            ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22)",
+            ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23)",
             params![
+                run.history_entry_id,
                 run.captured_at,
                 run.source,
                 run.status.as_str(),
@@ -1012,11 +1021,59 @@ impl HistoryManager {
         Ok(saved)
     }
 
+    pub fn save_context_probe_run_for_history(
+        &self,
+        history_entry_id: i64,
+        mut run: NewContextProbeRun,
+    ) -> Result<ContextProbeRun> {
+        let conn = self.get_connection()?;
+        Self::ensure_entry_exists_with_conn(&conn, history_entry_id)?;
+        run.history_entry_id = Some(history_entry_id);
+        let saved = Self::insert_context_probe_run_with_conn(&conn, run)?;
+        debug!(
+            "Saved context probe run {} for history entry {} with status {}",
+            saved.id,
+            history_entry_id,
+            saved.status.as_str()
+        );
+        self.emit_entry_updated(history_entry_id)?;
+        Ok(saved)
+    }
+
+    pub fn get_focused_context_for_entry(
+        &self,
+        history_entry_id: i64,
+    ) -> Result<Option<ContextProbeRun>> {
+        let conn = self.get_connection()?;
+        Self::get_focused_context_for_entry_with_conn(&conn, history_entry_id)
+    }
+
+    fn get_focused_context_for_entry_with_conn(
+        conn: &Connection,
+        history_entry_id: i64,
+    ) -> Result<Option<ContextProbeRun>> {
+        let mut stmt = conn.prepare(&format!(
+            "SELECT {}
+             FROM context_probe_runs
+             WHERE history_entry_id = ?1
+             ORDER BY captured_at DESC, id DESC
+             LIMIT 1",
+            Self::context_probe_select_columns()
+        ))?;
+        Ok(stmt
+            .query_row(params![history_entry_id], Self::map_context_probe_run)
+            .optional()?)
+    }
+
     pub fn get_context_probe_runs(&self, limit: u32) -> Result<Vec<ContextProbeRun>> {
         let limit = limit.clamp(1, 100);
         let conn = self.get_connection()?;
         let mut stmt = conn.prepare(&format!(
-            "SELECT {} FROM context_probe_runs ORDER BY captured_at DESC, id DESC LIMIT ?1",
+            "SELECT {}
+             FROM context_probe_runs
+             WHERE history_entry_id IS NULL
+             ORDER BY captured_at DESC, id DESC
+             LIMIT ?1",
             Self::context_probe_select_columns()
         ))?;
         let rows = stmt.query_map(params![i64::from(limit)], Self::map_context_probe_run)?;
@@ -1025,7 +1082,10 @@ impl HistoryManager {
 
     pub fn clear_context_probe_runs(&self) -> Result<usize> {
         let conn = self.get_connection()?;
-        let deleted = conn.execute("DELETE FROM context_probe_runs", [])?;
+        let deleted = conn.execute(
+            "DELETE FROM context_probe_runs WHERE history_entry_id IS NULL",
+            [],
+        )?;
         debug!("Cleared {} context probe runs", deleted);
         Ok(deleted)
     }
@@ -1215,6 +1275,10 @@ impl HistoryManager {
         )?;
         conn.execute(
             "DELETE FROM transcription_runs WHERE history_entry_id = ?1",
+            params![id],
+        )?;
+        conn.execute(
+            "DELETE FROM context_probe_runs WHERE history_entry_id = ?1",
             params![id],
         )?;
         conn.execute(
@@ -1496,6 +1560,7 @@ impl HistoryManager {
             transcription_runs,
             post_process_runs,
             events,
+            focused_context: Self::get_focused_context_for_entry_with_conn(&conn, id)?,
         }))
     }
 
@@ -1605,6 +1670,7 @@ mod tests {
             );
             CREATE TABLE context_probe_runs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                history_entry_id INTEGER,
                 captured_at INTEGER NOT NULL,
                 source TEXT NOT NULL,
                 status TEXT NOT NULL,
@@ -1905,6 +1971,7 @@ mod tests {
         let run = HistoryManager::insert_context_probe_run_with_conn(
             &conn,
             NewContextProbeRun {
+                history_entry_id: None,
                 captured_at: 800,
                 source: "manual".to_string(),
                 status: ContextProbeStatus::Success,
@@ -1932,6 +1999,7 @@ mod tests {
         .expect("insert context probe");
 
         assert_eq!(run.id, 1);
+        assert!(run.history_entry_id.is_none());
         assert_eq!(run.status, ContextProbeStatus::Success);
         assert_eq!(run.confidence, ContextProbeConfidence::High);
         assert_eq!(run.value_text.as_deref(), Some("hello world"));
@@ -1955,6 +2023,63 @@ mod tests {
             .execute("DELETE FROM context_probe_runs", [])
             .expect("clear context runs");
         assert_eq!(deleted, 1);
+    }
+
+    #[test]
+    fn focused_context_is_linked_to_history_and_deleted_with_entry() {
+        let conn = setup_conn();
+        insert_entry(&conn, 850, "hello", Some("Hello."));
+        let history_entry_id = conn.last_insert_rowid();
+
+        let saved = HistoryManager::insert_context_probe_run_with_conn(
+            &conn,
+            NewContextProbeRun {
+                history_entry_id: Some(history_entry_id),
+                captured_at: 850,
+                source: "transcription_start".to_string(),
+                status: ContextProbeStatus::Success,
+                confidence: ContextProbeConfidence::High,
+                latency_ms: 9,
+                app_name: Some("TextEdit".to_string()),
+                bundle_id: Some("com.apple.TextEdit".to_string()),
+                pid: Some(123),
+                window_title: Some("Untitled".to_string()),
+                element_role: Some("AXTextArea".to_string()),
+                element_subrole: None,
+                is_secure: false,
+                value_text: Some("hello world".to_string()),
+                before_text: Some("hello ".to_string()),
+                selected_text: Some("world".to_string()),
+                after_text: Some(String::new()),
+                selected_location_utf16: Some(6),
+                selected_length_utf16: Some(5),
+                number_of_characters: Some(11),
+                available_attributes_json: Some(r#"["AXValue"]"#.to_string()),
+                failure_reason: None,
+                truncated: false,
+            },
+        )
+        .expect("insert linked context probe");
+
+        assert_eq!(saved.history_entry_id, Some(history_entry_id));
+
+        let linked =
+            HistoryManager::get_focused_context_for_entry_with_conn(&conn, history_entry_id)
+                .expect("load linked context")
+                .expect("linked context exists");
+        assert_eq!(linked.selected_text.as_deref(), Some("world"));
+
+        HistoryManager::delete_entry_rows_with_conn(&conn, history_entry_id)
+            .expect("delete entry rows");
+
+        let linked_count: i64 = conn
+            .query_row(
+                "SELECT COUNT(*) FROM context_probe_runs WHERE history_entry_id = ?1",
+                params![history_entry_id],
+                |row| row.get(0),
+            )
+            .expect("count linked context");
+        assert_eq!(linked_count, 0);
     }
 
     #[test]
@@ -2049,7 +2174,12 @@ mod tests {
             .expect("count history rows");
         assert_eq!(history_count, 0);
 
-        for table in ["transcription_runs", "post_process_runs", "history_events"] {
+        for table in [
+            "transcription_runs",
+            "post_process_runs",
+            "history_events",
+            "context_probe_runs",
+        ] {
             let count: i64 = conn
                 .query_row(
                     &format!("SELECT COUNT(*) FROM {table} WHERE history_entry_id = ?1"),
@@ -2193,5 +2323,14 @@ mod tests {
             )
             .expect("check context_probe_runs value_text column");
         assert!(has_context_probe_value_text);
+
+        let has_context_probe_history_entry_id: bool = conn
+            .query_row(
+                "SELECT COUNT(*) > 0 FROM pragma_table_info('context_probe_runs') WHERE name = 'history_entry_id'",
+                [],
+                |row| row.get(0),
+            )
+            .expect("check context_probe_runs history_entry_id column");
+        assert!(has_context_probe_history_entry_id);
     }
 }

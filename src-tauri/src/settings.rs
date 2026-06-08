@@ -591,6 +591,8 @@ pub struct AppSettings {
     #[serde(default)]
     pub experimental_enabled: bool,
     #[serde(default)]
+    pub context_awareness_enabled: bool,
+    #[serde(default)]
     pub lazy_stream_close: bool,
     #[serde(default)]
     pub keyboard_implementation: KeyboardImplementation,
@@ -642,6 +644,16 @@ fn ensure_update_checks_disabled(settings: &mut AppSettings) -> bool {
         settings.update_checks_enabled = false;
         return true;
     }
+    false
+}
+
+fn ensure_context_awareness_platform_defaults(settings: &mut AppSettings) -> bool {
+    let should_disable = !settings.experimental_enabled || !cfg!(target_os = "macos");
+    if should_disable && settings.context_awareness_enabled {
+        settings.context_awareness_enabled = false;
+        return true;
+    }
+
     false
 }
 
@@ -1134,7 +1146,7 @@ fn default_post_process_presets() -> Vec<PostProcessPreset> {
             "translate_to_chinese",
             "自动翻译为中文",
             "将口述文本翻译为自然的简体中文，同时保留技术词、命令、路径和名称。",
-            "Translate this transcript into natural Simplified Chinese:\n1. Preserve the original meaning and intent.\n2. Keep code identifiers, commands, file paths, URLs, product names, project names, and proper nouns unchanged unless a conventional Chinese translation is clearly expected.\n3. Keep mixed Chinese/English technical terms readable; do not force-translate acronyms or code terms.\n4. If the transcript is already Chinese, only clean punctuation and wording lightly.\n5. Do not add facts, commentary, explanations, or quotation marks around the result.\n\nReturn only the translated text.\n\nTranscript:\n${output}",
+            "Translate this transcript into natural Simplified Chinese:\n1. Always produce Simplified Chinese as the primary language for non-Chinese content.\n2. Preserve the original meaning and intent.\n3. Keep code identifiers, commands, file paths, URLs, product names, project names, and proper nouns unchanged unless a conventional Chinese translation is clearly expected.\n4. Keep mixed Chinese/English technical terms readable; do not force-translate acronyms or code terms.\n5. If the transcript is already Chinese, only clean punctuation and wording lightly.\n6. Do not add facts, commentary, explanations, or quotation marks around the result.\n\nReturn only the translated text.\n\nTranscript:\n${output}",
             default_post_process_preset_output_kind(),
             vec![PostProcessPresetExample {
                 input: "please check the qwen asr provider and run cargo test again".to_string(),
@@ -1145,7 +1157,7 @@ fn default_post_process_presets() -> Vec<PostProcessPreset> {
             "translate_to_english",
             "自动翻译为英文",
             "将口述文本翻译为自然的英文，同时保留技术词、命令、路径和名称。",
-            "Translate this transcript into natural English:\n1. Preserve the original meaning and intent.\n2. Keep code identifiers, commands, file paths, URLs, product names, project names, and proper nouns unchanged unless a conventional English translation is clearly expected.\n3. Keep mixed Chinese/English technical terms readable; do not over-explain acronyms or code terms.\n4. If the transcript is already English, only clean punctuation and wording lightly.\n5. Do not add facts, commentary, explanations, or quotation marks around the result.\n\nReturn only the translated text.\n\nTranscript:\n${output}",
+            "Translate this transcript into natural English:\n1. Always produce English as the primary language for non-English content.\n2. Preserve the original meaning and intent.\n3. Keep code identifiers, commands, file paths, URLs, product names, project names, and proper nouns unchanged unless a conventional English translation is clearly expected.\n4. Keep mixed Chinese/English technical terms readable; do not over-explain acronyms or code terms.\n5. If the transcript is already English, only clean punctuation and wording lightly.\n6. Do not add facts, commentary, explanations, or quotation marks around the result.\n\nReturn only the translated text.\n\nTranscript:\n${output}",
             default_post_process_preset_output_kind(),
             vec![PostProcessPresetExample {
                 input: "帮我检查 Qwen ASR provider，然后再跑一次 cargo test".to_string(),
@@ -1622,6 +1634,7 @@ pub fn get_default_settings() -> AppSettings {
         append_trailing_space: false,
         app_language: default_app_language(),
         experimental_enabled: false,
+        context_awareness_enabled: false,
         lazy_stream_close: false,
         keyboard_implementation: KeyboardImplementation::default(),
         show_tray_icon: default_show_tray_icon(),
@@ -1745,11 +1758,13 @@ pub fn load_or_create_app_settings(app: &AppHandle) -> AppSettings {
     let asr_family_changed = ensure_asr_family_settings_defaults(&mut settings);
     let transcription_profile_changed = ensure_transcription_profile_defaults(&mut settings);
     let update_checks_changed = ensure_update_checks_disabled(&mut settings);
+    let context_awareness_changed = ensure_context_awareness_platform_defaults(&mut settings);
     if post_process_changed
         || asr_changed
         || asr_family_changed
         || transcription_profile_changed
         || update_checks_changed
+        || context_awareness_changed
     {
         store.set("settings", serde_json::to_value(&settings).unwrap());
     }
@@ -1832,6 +1847,22 @@ mod tests {
         let settings = get_default_settings();
         assert!(!settings.auto_submit);
         assert_eq!(settings.auto_submit_key, AutoSubmitKey::Enter);
+    }
+
+    #[test]
+    fn default_settings_disable_context_awareness() {
+        let settings = get_default_settings();
+        assert!(!settings.context_awareness_enabled);
+    }
+
+    #[test]
+    fn context_awareness_is_disabled_when_experimental_is_off() {
+        let mut settings = get_default_settings();
+        settings.experimental_enabled = false;
+        settings.context_awareness_enabled = true;
+
+        assert!(ensure_context_awareness_platform_defaults(&mut settings));
+        assert!(!settings.context_awareness_enabled);
     }
 
     #[test]

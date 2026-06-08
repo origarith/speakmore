@@ -1,4 +1,5 @@
 use crate::cli::{CliDataCommand, ConfigSubcommand, HistorySubcommand};
+use crate::context_awareness::{ContextProbeConfidence, ContextProbeRun, ContextProbeStatus};
 use crate::managers::history::{
     HistoryEntry, HistoryEvent, PostProcessRun, TranscriptionRun, HISTORY_EVENT_SAVED,
     HISTORY_EVENT_UNSAVED, HISTORY_EVENT_USER_EDIT_CLEARED, HISTORY_EVENT_USER_EDIT_SAVED,
@@ -371,6 +372,7 @@ struct HistoryDetailData {
     transcription_runs: Vec<TranscriptionRun>,
     post_process_runs: Vec<PostProcessRun>,
     events: Vec<HistoryEvent>,
+    focused_context: Option<ContextProbeRun>,
     audio_path: String,
 }
 
@@ -486,6 +488,7 @@ fn get_history_detail(conn: &Connection, data_dir: &Path, id: i64) -> CliResult<
         rows.collect::<rusqlite::Result<Vec<_>>>()
             .map_err(|error| DataCliError::from_error("history_query_failed", error))?
     };
+    let focused_context = get_focused_context_for_entry(conn, id)?;
 
     let audio_path = data_dir
         .join(RECORDINGS_DIR)
@@ -498,6 +501,7 @@ fn get_history_detail(conn: &Connection, data_dir: &Path, id: i64) -> CliResult<
         transcription_runs,
         post_process_runs,
         events,
+        focused_context,
         audio_path,
     })
 }
@@ -619,6 +623,11 @@ fn delete_history_entry(conn: &mut Connection, data_dir: &Path, id: i64) -> CliR
     .map_err(|error| DataCliError::from_error("history_delete_failed", error))?;
     conn.execute(
         "DELETE FROM transcription_runs WHERE history_entry_id = ?1",
+        params![id],
+    )
+    .map_err(|error| DataCliError::from_error("history_delete_failed", error))?;
+    conn.execute(
+        "DELETE FROM context_probe_runs WHERE history_entry_id = ?1",
         params![id],
     )
     .map_err(|error| DataCliError::from_error("history_delete_failed", error))?;
@@ -797,6 +806,61 @@ fn map_history_event(row: &rusqlite::Row<'_>) -> rusqlite::Result<HistoryEvent> 
     })
 }
 
+fn context_probe_columns() -> &'static str {
+    "id, history_entry_id, captured_at, source, status, confidence, latency_ms, app_name, bundle_id, pid, window_title, element_role, element_subrole, is_secure, value_text, before_text, selected_text, after_text, selected_location_utf16, selected_length_utf16, number_of_characters, available_attributes_json, failure_reason, truncated"
+}
+
+fn map_context_probe_run(row: &rusqlite::Row<'_>) -> rusqlite::Result<ContextProbeRun> {
+    let status: String = row.get("status")?;
+    let confidence: String = row.get("confidence")?;
+
+    Ok(ContextProbeRun {
+        id: row.get("id")?,
+        history_entry_id: row.get("history_entry_id")?,
+        captured_at: row.get("captured_at")?,
+        source: row.get("source")?,
+        status: ContextProbeStatus::from_db(&status),
+        confidence: ContextProbeConfidence::from_db(&confidence),
+        latency_ms: row.get("latency_ms")?,
+        app_name: row.get("app_name")?,
+        bundle_id: row.get("bundle_id")?,
+        pid: row.get("pid")?,
+        window_title: row.get("window_title")?,
+        element_role: row.get("element_role")?,
+        element_subrole: row.get("element_subrole")?,
+        is_secure: row.get("is_secure")?,
+        value_text: row.get("value_text")?,
+        before_text: row.get("before_text")?,
+        selected_text: row.get("selected_text")?,
+        after_text: row.get("after_text")?,
+        selected_location_utf16: row.get("selected_location_utf16")?,
+        selected_length_utf16: row.get("selected_length_utf16")?,
+        number_of_characters: row.get("number_of_characters")?,
+        available_attributes_json: row.get("available_attributes_json")?,
+        failure_reason: row.get("failure_reason")?,
+        truncated: row.get("truncated")?,
+    })
+}
+
+fn get_focused_context_for_entry(
+    conn: &Connection,
+    history_entry_id: i64,
+) -> CliResult<Option<ContextProbeRun>> {
+    let mut stmt = conn
+        .prepare(&format!(
+            "SELECT {}
+             FROM context_probe_runs
+             WHERE history_entry_id = ?1
+             ORDER BY captured_at DESC, id DESC
+             LIMIT 1",
+            context_probe_columns()
+        ))
+        .map_err(|error| DataCliError::from_error("history_query_failed", error))?;
+    stmt.query_row(params![history_entry_id], map_context_probe_run)
+        .optional()
+        .map_err(|error| DataCliError::from_error("history_query_failed", error))
+}
+
 fn final_text_and_layer(entry: &HistoryEntry) -> (String, String) {
     if let Some(text) = &entry.user_edited_text {
         return (text.clone(), "user_edited".to_string());
@@ -874,6 +938,32 @@ mod tests {
                 source TEXT NOT NULL,
                 payload_json TEXT,
                 created_at INTEGER NOT NULL
+            );
+            CREATE TABLE context_probe_runs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                history_entry_id INTEGER,
+                captured_at INTEGER NOT NULL,
+                source TEXT NOT NULL,
+                status TEXT NOT NULL,
+                confidence TEXT NOT NULL,
+                latency_ms INTEGER NOT NULL DEFAULT 0,
+                app_name TEXT,
+                bundle_id TEXT,
+                pid INTEGER,
+                window_title TEXT,
+                element_role TEXT,
+                element_subrole TEXT,
+                is_secure BOOLEAN NOT NULL DEFAULT 0,
+                value_text TEXT,
+                before_text TEXT,
+                selected_text TEXT,
+                after_text TEXT,
+                selected_location_utf16 INTEGER,
+                selected_length_utf16 INTEGER,
+                number_of_characters INTEGER,
+                available_attributes_json TEXT,
+                failure_reason TEXT,
+                truncated BOOLEAN NOT NULL DEFAULT 0
             );
             ",
         )

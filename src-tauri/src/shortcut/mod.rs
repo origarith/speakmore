@@ -975,6 +975,34 @@ pub fn change_post_process_enabled_setting(app: AppHandle, enabled: bool) -> Res
 pub fn change_experimental_enabled_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
     settings.experimental_enabled = enabled;
+    if !enabled {
+        settings.context_awareness_enabled = false;
+    }
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_context_awareness_enabled_setting(
+    app: AppHandle,
+    enabled: bool,
+) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+
+    if enabled && !cfg!(target_os = "macos") {
+        settings.context_awareness_enabled = false;
+        settings::write_settings(&app, settings);
+        return Err("Focused context is only available on macOS".to_string());
+    }
+
+    if enabled && !settings.experimental_enabled {
+        settings.context_awareness_enabled = false;
+        settings::write_settings(&app, settings);
+        return Err("Focused context requires experimental features to be enabled".to_string());
+    }
+
+    settings.context_awareness_enabled = enabled;
     settings::write_settings(&app, settings);
     Ok(())
 }

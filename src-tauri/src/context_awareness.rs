@@ -89,6 +89,7 @@ pub struct FocusedTextContext {
 
 #[derive(Clone, Debug)]
 pub struct NewContextProbeRun {
+    pub history_entry_id: Option<i64>,
     pub captured_at: i64,
     pub source: String,
     pub status: ContextProbeStatus,
@@ -116,6 +117,7 @@ pub struct NewContextProbeRun {
 #[derive(Clone, Debug, Serialize, Deserialize, Type)]
 pub struct ContextProbeRun {
     pub id: i64,
+    pub history_entry_id: Option<i64>,
     pub captured_at: i64,
     pub source: String,
     pub status: ContextProbeStatus,
@@ -160,6 +162,7 @@ impl ContextProbeRun {
 impl NewContextProbeRun {
     fn base(source: String, started_at: Instant) -> Self {
         Self {
+            history_entry_id: None,
             captured_at: Utc::now().timestamp(),
             source,
             status: ContextProbeStatus::Error,
@@ -183,6 +186,21 @@ impl NewContextProbeRun {
             failure_reason: None,
             truncated: false,
         }
+    }
+
+    pub fn focused_text_context(&self) -> Option<FocusedTextContext> {
+        if self.status != ContextProbeStatus::Success || self.is_secure {
+            return None;
+        }
+
+        Some(FocusedTextContext {
+            before_text: self.before_text.clone().unwrap_or_default(),
+            selected_text: self.selected_text.clone().unwrap_or_default(),
+            after_text: self.after_text.clone().unwrap_or_default(),
+            app_name: self.app_name.clone(),
+            bundle_id: self.bundle_id.clone(),
+            window_title: self.window_title.clone(),
+        })
     }
 
     fn with_status(

@@ -25,6 +25,7 @@ pub fn cancel_current_operation(app: &AppHandle) {
     let recording_was_active = audio_manager.is_recording();
     audio_manager.cancel_recording();
     audio_manager.set_recording_chunk_callback(None);
+    crate::actions::clear_pending_focused_context();
     crate::asr::cancel_active_realtime_session();
 
     // Update tray icon and hide overlay
